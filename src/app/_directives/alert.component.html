@@ -1,0 +1,4 @@
+﻿<div style="padding: 3px 10px; width: 98%; float: none;" class="center-block" *ngIf="message"
+	 [ngClass]="{ 'alert': message, 'alert-info': message.type === 'success', 'alert-danger': message.type === 'error' }">
+	{{message.text}}
+</div>

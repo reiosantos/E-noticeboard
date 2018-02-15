@@ -1,0 +1,182 @@
+<div class="row" *ngIf="addNotice">
+
+	<div class="col-md-4">
+
+		<app-alert></app-alert>
+
+		<div class="row" *ngIf="loading">
+			<div class="col-md-12">
+				<p style="color: green">
+					<img src="assets/lib/theme/img/loaders/default.gif" /> Saving changes... Please wait..
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<!-- LOGIN WIDGET -->
+				<form class="form-horizontal" [formGroup]="addNoticeForm" (submit)="noticeSubmit()" novalidate>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h2>Notice</h2>
+							<p>New post</p>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Title</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
+										<input [ngModel]="modalNotice.title" type="text" class="form-control" formControlName="title" [class.invalid]="!addNoticeForm.controls.title.valid" />
+									</div>
+									<span *ngIf="noticeSubmitted && !addNoticeForm.controls.title.valid" class="invalid">Title is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Description</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
+										<textarea rows="4" [ngModel]="modalNotice.descriptiion" type="text" class="form-control" formControlName="description" [class.invalid]="!addNoticeForm.controls.description.valid"></textarea>
+									</div>
+									<span *ngIf="noticeSubmitted && !addNoticeForm.controls.description.valid" class="invalid">Please describe the note...</span>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<button type="reset" class="btn btn-default">Clear Form</button>
+							<button type="submit" class="btn btn-primary pull-right">Submit</button>
+						</div>
+					</div>
+				</form>
+				<!-- END LOGIN WIDGET -->
+			</div>
+		</div>
+
+	</div>
+
+	<div class="col-md-8">
+		<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+			<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
+				Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search with NOTE TITLE"
+					   class="form-control pull-right" (keydown)="searchItems()" />
+			</form>
+		</div>
+		<div class="gallery" id="links">
+
+			<a *ngFor="let note of notices" class="gallery-item" title="{{ note.title }}" data-gallery>
+				<div class="meta">
+					<strong>{{ note.title }}</strong>
+					<b>Post Date: {{ note.post_date }}</b>
+				</div>
+				<div class="image">
+					<p style="padding: 15px; ">
+						{{ note.descriptiion }}
+					</p>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteNotice(note)"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+			</a>
+
+			<a class="gallery-item" title="Music picture 1" data-gallery>
+				<div class="meta">
+					<strong>Tuition</strong>
+					<span>wed 23, 3 2017</span>
+				</div>
+				<div class="image">
+					<p style="padding: 15px; ">
+						Am informing all
+					</p>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteNotice(notices[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+			</a>
+			<a class="gallery-item" title="Music picture 1" data-gallery>
+				<div class="meta">
+					<strong>Tuition</strong>
+					<span>wed 23, 3 2017</span>
+				</div>
+				<div class="image">
+					<p style="padding: 15px; ">
+						Am informing all
+					</p>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteNotice(notices[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+			</a>
+			<a class="gallery-item" title="Music picture 1" data-gallery>
+				<div class="meta">
+					<strong>Tuition</strong>
+					<span>wed 23, 3 2017</span>
+				</div>
+				<div class="image">
+					<p style="padding: 15px; ">
+						Am informing all
+					</p>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteNotice(notices[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+			</a>
+			<a class="gallery-item" title="Music picture 1" data-gallery>
+				<div class="meta">
+					<strong>Tuition</strong>
+					<span>wed 23, 3 2017</span>
+				</div>
+				<div class="image">
+					<p style="padding: 15px; ">
+						Am informing all
+					</p>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteNotice(notices[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+			</a>
+			<a class="gallery-item" title="Music picture 1" data-gallery>
+				<div class="meta">
+					<strong>Tuition</strong>
+					<span>wed 23, 3 2017</span>
+				</div>
+				<div class="image">
+					<p style="padding: 15px; ">
+						Am informing all
+					</p>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteNotice(notices[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+			</a>
+			<a class="gallery-item" title="Music picture 1" data-gallery>
+				<div class="meta">
+					<strong>Tuition</strong>
+					<span>wed 23, 3 2017</span>
+				</div>
+				<div class="image">
+					<p style="padding: 15px; ">
+						Am informing all
+					</p>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteNotice(notices[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+			</a>
+			<a class="gallery-item" title="Music picture 1" data-gallery>
+				<div class="meta">
+					<strong>Tuition</strong>
+					<span>wed 23, 3 2017</span>
+				</div>
+				<div class="image">
+					<p style="padding: 15px; ">
+						Am informing all
+					</p>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteNotice(notices[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+			</a>
+
+		</div>
+	</div>
+
+</div>

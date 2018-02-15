@@ -1,0 +1,121 @@
+
+<div class="row">
+	<div class="col-md-12">
+
+		<app-alert></app-alert>
+
+		<div class="row" *ngIf="loading">
+			<div class="col-md-12">
+				<p style="color: green">
+					<img src="assets/lib/theme/img/loaders/default.gif" /> Saving changes... Please wait..
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<!-- LOGIN WIDGET -->
+				<form class="form-horizontal" [formGroup]="addDepartmentForm" (submit)="departmentSubmit()" novalidate>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h2>Department</h2>
+							<p>Add department</p>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Department Name</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-qrcode"></span></span>
+										<input [ngModel]="modalDepartment.name" type="text" class="form-control" formControlName="name" [class.invalid]="!addDepartmentForm.controls.name.valid" />
+									</div>
+									<span *ngIf="departmentSubmitted && !addDepartmentForm.controls.name.valid" class="invalid">Name is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Head of Department</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-qrcode"></span></span>
+										<input [ngModel]="modalDepartment.head" type="text" class="form-control" formControlName="head" [class.invalid]="!addDepartmentForm.controls.head.valid" />
+									</div>
+									<span *ngIf="departmentSubmitted && !addDepartmentForm.controls.head.valid" class="invalid">Name of the head is required</span>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<button type="reset" class="btn btn-default">Clear Form</button>
+							<button type="submit" class="btn btn-primary pull-right">Submit</button>
+						</div>
+					</div>
+				</form>
+				<!-- END LOGIN WIDGET -->
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+					<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
+						Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search department name"
+									   class="form-control pull-right" (keydown)="searchItems()" />
+					</form>
+
+				</div>
+
+				<table class="table table-striped table-border table-hover">
+					<thead>
+					<tr>
+						<th>Department Name</th>
+						<th>Head of department</th>
+						<th>Action</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr *ngFor="let department of departments">
+						<td>{{ department.name }}</td>
+						<td>{{ department.head }}</td>
+						<td>
+							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+						</td>
+					</tr>
+					<tr>
+						<td>Networks</td>
+						<td>Santos</td>
+						<td>
+							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+						</td>
+					</tr>
+					<tr>
+						<td>Networks</td>
+						<td>Santos</td>
+						<td>
+							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+						</td>
+					</tr>
+					<tr>
+						<td>Networks</td>
+						<td>Santos</td>
+						<td>
+							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+						</td>
+					</tr>
+					<tr>
+						<td>Networks</td>
+						<td>Santos</td>
+						<td>
+							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+						</td>
+					</tr>
+
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+
+	</div>
+</div>

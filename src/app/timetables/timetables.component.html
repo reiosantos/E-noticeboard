@@ -1,0 +1,253 @@
+<div class="row" *ngIf="addTable">
+
+	<div class="col-md-4">
+
+		<app-alert></app-alert>
+		<div class="row" *ngIf="loading">
+			<div class="col-md-12">
+				<p style="color: green">
+					<img src="assets/lib/theme/img/loaders/default.gif" /> Saving changes... Please wait..
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<!-- LOGIN WIDGET -->
+				<form class="form-horizontal" [formGroup]="addTableForm" (submit)="tableSubmit()" novalidate>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h2>TimeTable</h2>
+							<p>Upload new</p>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Title (Course)</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
+										<input [ngModel]="modalTimetable.title" type="text" class="form-control" formControlName="title" [class.invalid]="!addTableForm.controls.title.valid" />
+									</div>
+									<span *ngIf="tableSubmitted && !addTableForm.controls.title.valid" class="invalid">Title is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Semester</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
+										<input [ngModel]="modalTimetable.semester" type="text" class="form-control" formControlName="semester" [class.invalid]="!addTableForm.controls.semester.valid"/>
+									</div>
+									<span *ngIf="tableSubmitted && !addTableForm.controls.semester.valid" class="invalid">Semester number is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Academic Year</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-calendar-o"></span></span>
+										<input [ngModel]="modalTimetable.year" type="text" class="form-control" formControlName="year" [class.invalid]="!addTableForm.controls.year.valid" />
+									</div>
+									<span *ngIf="tableSubmitted && !addTableForm.controls.year.valid" class="invalid">Field is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Time Table upload (PDF)</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-file-image-o"></span></span>
+										<input type="file" class="form-control" (change)="onFileChange($event)" accept="application/pdf" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<button type="reset" class="btn btn-default">Clear Form</button>
+							<button type="submit" class="btn btn-primary pull-right">Submit</button>
+						</div>
+					</div>
+				</form>
+				<!-- END LOGIN WIDGET -->
+			</div>
+		</div>
+
+	</div>
+
+	<div class="col-md-8">
+		<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+			<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
+				Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search with ACADEMIC YEAR"
+							   class="form-control pull-right" (keydown)="searchItems()" />
+			</form>
+		</div>
+		<div class="gallery" id="links">
+
+			<a *ngFor="let table of tables" class="gallery-item" title="{{ table.title }}" data-gallery>
+				<div class="image">
+					<img src="uploads/timetables/{{ table.file_name }}" alt="{{ table.file_name }}"/>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteTable(table)"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>{{ table.title }}</strong>
+					<b>Academic Year: {{ table.year }}</b>
+					<span>Semester: {{ table.semester }}</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" title="Music picture 1" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/music-1.jpg" alt="Music picture 1"/>
+					<ul class="gallery-item-controls">
+						<li style="background: darkred" (click)="deleteTable(tables[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Music picture 1</strong>
+					<span>Other description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/girls-1.jpg" title="Girls Image 1" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/girls-1.jpg" alt="Girls Image 1"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Girls image 1</strong>
+					<span>Description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-2.jpg" title="Nature Image 2" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/nature-2.jpg" alt="Nature Image 2"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Nature image 2</strong>
+					<span>Description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/space-1.jpg" title="Space picture 1" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/space-1.jpg" alt="Space picture 1"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Space picture 1</strong>
+					<span>Other description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/music-2.jpg" title="Music picture 2" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/music-2.jpg" alt="Music picture 2"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Music picture 2</strong>
+					<span>Other description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-3.jpg" title="Nature Image 3" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/nature-3.jpg" alt="Nature Image 3"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Nature image 3</strong>
+					<span>Description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-5.jpg" title="Nature Image 5" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/nature-5.jpg" alt="Nature Image 5"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Nature image 5</strong>
+					<span>Description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-6.jpg" title="Nature Image 6" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/nature-6.jpg" alt="Nature Image 6"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Nature image 6</strong>
+					<span>Description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/girls-3.jpg" title="Girls Image 3" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/girls-3.jpg" alt="Girls Image 3"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Girls image 3</strong>
+					<span>Description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-7.jpg" title="Nature Image 7" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/nature-7.jpg" alt="Nature Image 7"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Nature image 7</strong>
+					<span>Description</span>
+				</div>
+			</a>
+
+			<a class="gallery-item" href="assets/lib/theme/images/gallery/music-5.jpg" title="Music picture 5" data-gallery>
+				<div class="image">
+					<img src="assets/lib/theme/images/gallery/music-5.jpg" alt="Music picture 5"/>
+					<ul class="gallery-item-controls">
+						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+					</ul>
+				</div>
+				<div class="meta">
+					<strong>Music picture 5</strong>
+					<span>Other description</span>
+				</div>
+			</a>
+
+		</div>
+	</div>
+
+</div>
