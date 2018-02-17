@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../_services/authentication.service';
+import {Router} from '@angular/router';
 import {AlertService} from '../_services/alert.service';
 import {isNullOrUndefined} from 'util';
 
@@ -12,7 +12,10 @@ import {isNullOrUndefined} from 'util';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-	title = 'NoticeBoard';
+	@Output()
+	loginEmmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+	title = 'Notice Board';
 	loginForm: FormGroup;
 	loading = false;
 	submitted = false;
@@ -21,18 +24,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private formBuilder: FormBuilder,
-		private location: Location,
+		private router: Router,
 		private alertService: AlertService,
 		private authService: AuthenticationService,
 	) {
 		this.loginForm = formBuilder.group({
 			email: ['', Validators.compose([Validators.required])],
-			password: ['', Validators.compose([Validators.required])]
 		});
 	}
 
 	ngOnInit() {
+		// reset login status
 		this.authService.logout();
+		this.loginEmmitter.emit(false);
 	}
 
 	login() {
@@ -41,12 +45,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 			return false;
 		}
 		this.loading = true;
-		this.loginSubscription = this.authService.login(this.model.username, this.model.password).subscribe(
+		this.loginSubscription = this.authService.login(this.model.username).subscribe(
 			data => {
 				if (!data) {
 					this.alertService.error('Internal Server Error. Consult the administrator.');
 				}else if (!isNullOrUndefined(data.data) && data.data) {
-					location.reload();
+					this.router.navigate(['/home']);
+					this.loginEmmitter.emit(true);
 				}else {
 					this.alertService.error(data.error || 'Invalid user Credentials..');
 				}

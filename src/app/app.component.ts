@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import {User} from './_models/user';
 import {AuthenticationService} from './_services/authentication.service';
 import {Router} from '@angular/router';
+import {environment} from '../environments/environment.prod';
 
 @Component({
 	selector: 'app-root',
@@ -25,10 +26,18 @@ export class AppComponent {
 		private authService: AuthenticationService,
 		private location: Location
 	) {
-		if (localStorage.getItem('currentUser') !== null) {
-			this.user = JSON.parse(localStorage.getItem('currentUser'));
+		if (localStorage.getItem(environment.userStorageKey) !== null) {
+			this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		}
 		this.isLoggedin = !!this.user;
+	}
+
+	loginEmit(status) {
+		this.isLoggedin = status;
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		if (this.isLoggedin) {
+			location.reload();
+		}
 	}
 
 	logout() {

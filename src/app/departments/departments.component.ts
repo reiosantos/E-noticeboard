@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DepartmentService} from '../_services/department.service';
 import {AlertService} from '../_services/alert.service';
 import {isBoolean, isNullOrUndefined} from 'util';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-departments',
@@ -28,7 +29,7 @@ export class DepartmentsComponent implements OnInit {
 		private departmentService: DepartmentService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addDepartmentForm = fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			head: ['', Validators.compose([Validators.required])],

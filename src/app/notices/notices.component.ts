@@ -8,6 +8,7 @@ import {isBoolean, isNullOrUndefined} from 'util';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/first';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-notices',
@@ -34,7 +35,7 @@ export class NoticesComponent implements OnInit, OnDestroy {
 		private noticeService: NoticeService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addNoticeForm = fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			description: ['', Validators.compose([Validators.required])],

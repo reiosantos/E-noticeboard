@@ -94,12 +94,11 @@ else{
 
 		if($_POST['action'] ==  "login") {
 			$username = isset($_POST['username']) ? $_POST['username']: null;
-			$password = isset($_POST['password']) ? $_POST['password']: null;
 
-			if ($username == null || $password == null){
+			if ($username == null){
 				echo json_encode(['error'=>'Please Fill all the fields and submit.']);
 			}else{
-				echo json_encode(['error'=> false, 'data' => $db->users->login(cleanData($username), cleanData($password))]);
+				echo json_encode(['error'=> false, 'data' => $db->users->login(cleanData($username))]);
 			}
 		}
 		elseif ($_POST['action'] ==  "saveComment"){

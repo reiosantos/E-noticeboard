@@ -168,18 +168,17 @@ class Users
 
 	/**
 	 * @param $username
-	 * @param $password
 	 * @return array|bool
 	 */
-	public function login($username, $password){
+	public function login($username){
 		try{
 			$this->handle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->handle->beginTransaction();
 
-			$users = $this->handle->prepare("SELECT a.*, b.store_name FROM users a LEFT OUTER JOIN stores b ON a.store_id=b.id WHERE ((email=:username OR contact=:username) AND password=:pass)");
+			$users = $this->handle->prepare("SELECT a.*, b.course_code, b.course_name FROM students a LEFT OUTER JOIN 
+courses b ON a.student_course=b.id WHERE (registration_no=:username OR student_no=:username)");
 			if($users->execute([
 				':username'=>$username,
-				':pass'=>$this->hashPassword($password),
 			])){
 
 				if($users->rowCount() < 1){ return false; }
@@ -188,13 +187,12 @@ class Users
 
 				$ret = [
 					'id' => $row['id'],
-					'first_name' => $row['first_name'],
-					'last_name' => $row['last_name'],
-					'contact' => $row['contact'],
-					'email' => $row['email'],
-					'is_admin' => boolval($row['is_admin']),
-					'store_id' => $row['store_id'],
-					'store_name' => $row['store_name'],
+					'name' => $row['student_name'],
+					'registration_no' => $row['registration_no'],
+					'student_no' => $row['student_no'],
+					'student_course_name' => boolval($row['course_name']),
+					'student_course_code' => boolval($row['course_code']),
+					'user_type' => 'student',
 					'token' => $this->generateToken(),
 				];
 				return $ret;

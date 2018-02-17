@@ -6,6 +6,7 @@ import {AlertService} from '../_services/alert.service';
 import {LecturerService} from '../_services/lecturer.service';
 import {isBoolean, isNullOrUndefined} from 'util';
 import {EmailValidator} from '../../validators/email';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-lecturers',
@@ -30,7 +31,7 @@ export class LecturersComponent implements OnInit {
 		private lecturerService: LecturerService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addLecturerForm = fb.group({
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],

@@ -8,6 +8,7 @@ import {isBoolean, isNullOrUndefined} from 'util';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/first';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-courses',
@@ -36,7 +37,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 		private courseService: CourseService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addCourseForm = fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			code: ['', Validators.compose([Validators.required])],

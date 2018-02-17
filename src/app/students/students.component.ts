@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../_services/alert.service';
 import {StudentService} from '../_services/student.service';
 import {isBoolean, isNullOrUndefined} from 'util';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-students',
@@ -29,7 +30,7 @@ export class StudentsComponent implements OnInit {
 		private studentService: StudentService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addStudentForm = fb.group({
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],

@@ -12,4 +12,4 @@ $details=array();
 $details['host'] = "localhost"; //server host name
 $details['username'] = "root"; //your mysql user name
 $details['password'] = "santos"; //your mysql user name
-$details['database'] = "kaderi"; //your database name
+$details['database'] = "noticeboard"; //your database name

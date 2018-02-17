@@ -1,5 +1,5 @@
 <!-- START PAGE CONTAINER -->
-<div class="page-container page-navigation-top">
+<div class="page-container page-navigation-top" *ngIf="isLoggedin && user!=null">
 	<!-- PAGE CONTENT -->
 	<div class="page-content">
 		<!-- START X-NAVIGATION VERTICAL -->
@@ -33,7 +33,7 @@
 			</li>
 			<!-- SIGN OUT -->
 			<li class="pull-right">
-				<a href="javascript:void(0)" *ngIf="isLoggedin && user!=null" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span><span class="xn-text" >{{ user.first_name }} {{ user.last_name }}</span></a>
+				<a href="javascript:void(0)" *ngIf="isLoggedin && user!=null" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span><span class="xn-text" >{{ user.name }}</span></a>
 				<a href="javascript:void(0)" *ngIf="!isLoggedin || user==null" class="mb-control" data-box="#mb-signin"><span class="fa fa-sign-in"></span><span class="xn-text" >Login Here</span></a>
 			</li>
 			<!-- END SIGN OUT -->
@@ -194,3 +194,6 @@
 	</div>
 </div>
 <!-- END LOGIN MESSAGE BOX-->
+
+
+<app-login *ngIf="!isLoggedin || user == null" (loginEmmitter)="loginEmit($event)" ></app-login>

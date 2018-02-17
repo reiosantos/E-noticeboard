@@ -5,6 +5,7 @@ import {AlertService} from '../_services/alert.service';
 import {UpshotService} from '../_services/upshot.service';
 import {isBoolean, isNullOrUndefined} from 'util';
 import {Upshot} from '../_models/upshot';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-upshots',
@@ -25,7 +26,7 @@ export class UpshotsComponent implements OnInit {
 		private eventService: UpshotService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addEventForm = fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			subtitle: [''],

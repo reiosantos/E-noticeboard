@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../_services/alert.service';
 import {isBoolean, isNullOrUndefined} from 'util';
 import {ProgrammeService} from '../_services/programme.service';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-programmes',
@@ -29,7 +30,7 @@ export class ProgrammesComponent implements OnInit {
 		private programmeService: ProgrammeService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addProgrammeForm = fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			code: ['', Validators.compose([Validators.required])],

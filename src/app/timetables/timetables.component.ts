@@ -8,6 +8,7 @@ import {isBoolean, isNullOrUndefined} from 'util';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/first';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-timetables',
@@ -35,7 +36,7 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 		private tableService: TimetableService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addTableForm = fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			pdf_file: null,

@@ -30,6 +30,7 @@ import {DepartmentService} from './_services/department.service';
 import {LecturerService} from './_services/lecturer.service';
 import {StudentService} from './_services/student.service';
 import {RoomService} from './_services/room.service';
+import {AuthGuard} from './_guards/auth.guard';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import {RoomService} from './_services/room.service';
 		HttpClientModule,
 	],
 	providers: [
+		AuthGuard,
 		AlertService,
 		AuthenticationService,
 		CourseService,

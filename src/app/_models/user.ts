@@ -1,14 +1,10 @@
 ﻿export class User {
 	id: number;
-	first_name: string;
-	last_name: string;
-	contact: string;
-	email: string;
-	is_admin: boolean;
+	name: string;
+	registration_no: string;
+	student_no: string;
+	student_course_name: string;
+	student_course_code: string;
+	user_type: boolean;
 	is_student: boolean;
-	password: string;
-	username: any;
-	registration_number: any
-	student_number: any;
-
 }

@@ -5,6 +5,7 @@ import {Room} from '../_models/room';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../_services/alert.service';
 import {RoomService} from '../_services/room.service';
+import {environment} from '../../environments/environment.prod';
 
 @Component({
 	selector: 'app-rooms-offices',
@@ -29,7 +30,7 @@ export class RoomsOfficesComponent implements OnInit {
 		private roomService: RoomService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem('currentUser'));
+		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addRoomForm = fb.group({
 			block: ['', Validators.compose([Validators.required])],
 			level: ['', Validators.compose([Validators.required])],
