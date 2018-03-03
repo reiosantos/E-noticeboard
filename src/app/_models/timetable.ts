@@ -1,6 +1,7 @@
 export class Timetable {
 	id: any;
-	title: string;
+	programme_id: string;
+	programme_name: string;
 	year: string;
 	semester: string;
 	file: any;

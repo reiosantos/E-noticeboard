@@ -11,6 +11,7 @@ import {NoticesComponent} from './notices/notices.component';
 import {UpshotsComponent} from './upshots/upshots.component';
 import {ProgrammesComponent} from './programmes/programmes.component';
 import {AuthGuard} from './_guards/auth.guard';
+import {AdminComponent} from './admins/admin.component';
 
 const appRoutes: Routes = [
 	{ path: '', redirectTo: 'home', pathMatch: 'full', canActivate: [AuthGuard]},
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
 	{ path: 'events', component: UpshotsComponent, canActivate: [AuthGuard]},
 	{ path: 'timetables', component: TimetablesComponent, canActivate: [AuthGuard]},
 	{ path: 'notices', component: NoticesComponent, canActivate: [AuthGuard]},
+	{ path: 'admins', component: AdminComponent, canActivate: [AuthGuard]},
 	{ path: 'login', component: LoginComponent },
 	// otherwise redirect to home
 	{ path: '**', redirectTo: '', canActivate: [AuthGuard]}

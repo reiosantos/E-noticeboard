@@ -9,6 +9,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/first';
 import {environment} from '../../environments/environment.prod';
+import {Programme} from '../_models/programme';
+import {ProgrammeService} from '../_services/programme.service';
 
 @Component({
 	selector: 'app-courses',
@@ -23,7 +25,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
 	loading = false;
 	courseSubmitted = false;
-	programmes: any = [];
+	programmes: Programme[] = [];
 	courses: any = [];
 
 	courseSubscription: any;
@@ -35,6 +37,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 	constructor(
 		private alertService: AlertService,
 		private courseService: CourseService,
+		private programmeService: ProgrammeService,
 		private fb: FormBuilder
 	) {
 		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
@@ -48,6 +51,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this.refreshProgrammes();
 		this.refreshCourses();
 	}
 
@@ -148,6 +152,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
 					this.tempCourses = data.data;
 				}
 				this.subscribeToData();
+			},
+		);
+	}
+
+	refreshProgrammes() {
+		this.programmeService.getAll().subscribe(
+			data => {
+				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
+					this.programmes = data.data;
+				}
 			},
 		);
 	}

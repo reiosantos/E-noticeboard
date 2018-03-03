@@ -219,6 +219,6 @@ courses b ON a.student_course=b.id WHERE (registration_no=:username OR student_n
 	 * @return int|string
 	 */
 	private function generateToken() {
-		return mb_convert_encoding(random_bytes(10),'UTF-8', 'UTF-8');
+		return mb_convert_encoding(rand(100000, 900000),'UTF-8', 'UTF-8');
 	}
 }

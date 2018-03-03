@@ -9,6 +9,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/first';
 import {environment} from '../../environments/environment.prod';
+import {ProgrammeService} from '../_services/programme.service';
+import {Programme} from '../_models/programme';
 
 @Component({
 	selector: 'app-notices',
@@ -22,6 +24,7 @@ export class NoticesComponent implements OnInit, OnDestroy {
 	addNoticeForm: FormGroup;
 	modalNotice: Notice;
 	noticeSubmitted = false;
+	programmes: Programme[] = [];
 	notices: any = [];
 
 	noticeSubscription: any;
@@ -33,18 +36,21 @@ export class NoticesComponent implements OnInit, OnDestroy {
 	constructor(
 		private alertService: AlertService,
 		private noticeService: NoticeService,
+		private programmeService: ProgrammeService,
 		private fb: FormBuilder
 	) {
 		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addNoticeForm = fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			description: ['', Validators.compose([Validators.required])],
+			programme_id: ['', Validators.compose([Validators.required])],
 		});
 		this.searchForm = fb.group({ search: [''] });
 		this.modalNotice = new Notice();
 	}
 
 	ngOnInit() {
+		this.refreshProgrammes();
 		this.refreshNotices();
 	}
 
@@ -138,6 +144,16 @@ export class NoticesComponent implements OnInit, OnDestroy {
 					this.tempNotices = data.data;
 				}
 				this.subscribeToData();
+			},
+		);
+	}
+
+	refreshProgrammes() {
+		this.programmeService.getAll().subscribe(
+			data => {
+				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
+					this.programmes = data.data;
+				}
 			},
 		);
 	}

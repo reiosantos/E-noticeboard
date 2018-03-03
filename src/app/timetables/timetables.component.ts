@@ -9,6 +9,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/first';
 import {environment} from '../../environments/environment.prod';
+import {Programme} from '../_models/programme';
+import {ProgrammeService} from '../_services/programme.service';
 
 @Component({
 	selector: 'app-timetables',
@@ -24,6 +26,7 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 	modalTimetable: Timetable;
 	tableSubmitted = false;
 	tables: any = [];
+	programmes: Programme[] = [];
 
 	tableSubscription: any;
 	timerSubscription: any;
@@ -34,11 +37,12 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 	constructor(
 		private alertService: AlertService,
 		private tableService: TimetableService,
+		private programmeService: ProgrammeService,
 		private fb: FormBuilder
 	) {
 		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
 		this.addTableForm = fb.group({
-			title: ['', Validators.compose([Validators.required])],
+			programme_id: ['', Validators.compose([Validators.required])],
 			pdf_file: null,
 			year: ['', Validators.compose([Validators.required])],
 			semester: ['', Validators.compose([Validators.required])],
@@ -48,6 +52,7 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this.refreshProgrammes();
 		this.refreshTables();
 	}
 
@@ -88,7 +93,7 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 		if (this.addTableForm.valid) {
 			this.loading = true;
 			const us = new Timetable();
-			us.title = this.addTableForm.controls.title.value;
+			us.programme_id = this.addTableForm.controls.programme_id.value;
 			us.year = this.addTableForm.controls.year.value;
 			us.semester = this.addTableForm.controls.semester.value;
 			us.file = this.addTableForm.controls.pdf_file.value;
@@ -154,6 +159,16 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 					this.tempTables = data.data;
 				}
 				this.subscribeToData();
+			},
+		);
+	}
+
+	refreshProgrammes() {
+		this.programmeService.getAll().subscribe(
+			data => {
+				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
+					this.programmes = data.data;
+				}
 			},
 		);
 	}

@@ -31,11 +31,14 @@ import {LecturerService} from './_services/lecturer.service';
 import {StudentService} from './_services/student.service';
 import {RoomService} from './_services/room.service';
 import {AuthGuard} from './_guards/auth.guard';
+import {AdminComponent} from './admins/admin.component';
+import {AdminService} from './_services/admin.service';
 
 
 @NgModule({
 	declarations: [
 		AppComponent,
+		AdminComponent,
 		AlertComponent,
 		LoginComponent,
 		HomeComponent,
@@ -57,6 +60,7 @@ import {AuthGuard} from './_guards/auth.guard';
 		HttpClientModule,
 	],
 	providers: [
+		AdminService,
 		AuthGuard,
 		AlertService,
 		AuthenticationService,

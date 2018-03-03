@@ -1,0 +1,155 @@
+
+<div class="row">
+	<div class="col-md-4">
+
+		<app-alert ></app-alert>
+
+		<div class="row" *ngIf="loading">
+			<div class="col-md-12">
+				<p style="color: green">
+					<img src="assets/lib/theme/img/loaders/default.gif" /> Saving changes... Please wait..
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<!-- LOGIN WIDGET -->
+				<form class="form-horizontal" [formGroup]="addAdminForm" (submit)="adminSubmit()" novalidate>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h2>Administrators</h2>
+							<p>Add an admin</p>
+							<div class="form-group">
+								<label class="col-md-3 control-label">First Name</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
+										<input [ngModel]="modalAdmin.first_name" type="text" class="form-control" formControlName="first_name" [class.invalid]="!addAdminForm.controls.first_name.valid" />
+									</div>
+									<span *ngIf="adminSubmitted && !addAdminForm.controls.first_name.valid" class="invalid">first name is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Last Name</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
+										<input [ngModel]="modalAdmin.last_name" type="text" class="form-control" formControlName="last_name" [class.invalid]="!addAdminForm.controls.last_name.valid" />
+									</div>
+									<span *ngIf="adminSubmitted && !addAdminForm.controls.last_name.valid" class="invalid">last name is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Email.</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-envelope-o"></span></span>
+										<input [ngModel]="modalAdmin.email" type="email" class="form-control" formControlName="email" [class.invalid]="!addAdminForm.controls.email.valid" />
+									</div>
+									<span *ngIf="adminSubmitted && !addAdminForm.controls.email.valid" class="invalid">Provide a valid email</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Contact .</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-phone"></span></span>
+										<input [ngModel]="modalAdmin.contact" type="text" class="form-control" formControlName="contact" [class.invalid]="!addAdminForm.controls.contact.valid" />
+									</div>
+									<span *ngIf="adminSubmitted && !addAdminForm.controls.contact.valid" class="invalid">Field is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Password.</label>
+								<div class="col-md-9">
+									<div class="input-group">
+										<span class="input-group-addon"><span class="fa fa-qrcode"></span></span>
+										<input [ngModel]="modalAdmin.password" type="text" class="form-control" formControlName="password" [class.invalid]="!addAdminForm.controls.password.valid" />
+									</div>
+									<span *ngIf="adminSubmitted && !addAdminForm.controls.password.valid" class="invalid">Field is required</span>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<button type="reset" class="btn btn-default">Clear Form</button>
+							<button type="submit" class="btn btn-primary pull-right">Submit</button>
+						</div>
+					</div>
+				</form>
+				<!-- END LOGIN WIDGET -->
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-8">
+		<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+			<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
+				Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search Admin name"
+							   class="form-control pull-right" (keydown)="searchItems()" />
+			</form>
+
+		</div>
+
+		<table class="table table-striped table-border table-hover">
+			<thead>
+			<tr>
+				<th>Name</th>
+				<th>Email.</th>
+				<th>Contact.</th>
+				<th>Action</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr *ngFor="let admin of admins">
+				<td>{{ admin.first_name }} {{ admin.last_name }}</td>
+				<td>{{ admin.email }}</td>
+				<td>{{ admin.contact }}</td>
+				<td>
+					<button (click)="editAdmin(admin)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+					<button (click)="deleteAdmin(admin)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Santos Reio</td>
+				<td>12/34/U/344</td>
+				<td>9447928839</td>
+				<td>
+					<button (click)="editAdmin(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+					<button (click)="deleteAdmin(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+				</td>
+			</tr>
+			<tr>
+				<td>Santos Reio</td>
+				<td>12/34/U/344</td>
+				<td>9447928839</td>
+				<td>
+					<button (click)="editAdmin(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+					<button (click)="deleteAdmin(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+				</td>
+			</tr>
+			<tr>
+				<td>Santos Reio</td>
+				<td>12/34/U/344</td>
+				<td>9447928839</td>
+				<td>
+					<button (click)="editAdmin(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+					<button (click)="deleteAdmin(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+				</td>
+			</tr>
+			<tr>
+				<td>Santos Reio</td>
+				<td>12/34/U/344</td>
+				<td>9447928839</td>
+				<td>
+					<button (click)="editAdmin(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
+					<button (click)="deleteAdmin(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
+				</td>
+			</tr>
+
+			</tbody>
+		</table>
+
+	</div>
+</div>

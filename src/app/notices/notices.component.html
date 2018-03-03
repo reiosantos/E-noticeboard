@@ -21,6 +21,18 @@
 							<h2>Notice</h2>
 							<p>New post</p>
 							<div class="form-group">
+								<label class="col-md-3 control-label">Programme</label>
+								<div class="col-md-9">
+									<select title="stores" [class.invalid]="!addNoticeForm.controls.programme_id.valid" [ngModel]="modalNotice.programme_id" formControlName="programme_id" class="form-control">
+										<option value="0" selected="selected" disabled >---------------------</option>
+										<option *ngFor="let program of programmes" [ngValue]="program.id" >
+											{{ program.name }}
+										</option>
+									</select>
+									<span *ngIf="noticeSubmitted && !addNoticeForm.controls.programme_id.valid" class="invalid">Select a programme</span>
+								</div>
+							</div>
+							<div class="form-group">
 								<label class="col-md-3 control-label">Title</label>
 								<div class="col-md-9">
 									<div class="input-group">
@@ -64,6 +76,7 @@
 
 			<a *ngFor="let note of notices" class="gallery-item" title="{{ note.title }}" data-gallery>
 				<div class="meta">
+                    <strong>{{ note.programme_id }}</strong>
 					<strong>{{ note.title }}</strong>
 					<b>Post Date: {{ note.post_date }}</b>
 				</div>
