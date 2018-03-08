@@ -9,7 +9,7 @@
 global $details;
 $details=array();
 
-$details['host'] = "localhost"; //server host name
-$details['username'] = "root"; //your mysql user name
-$details['password'] = "santos"; //your mysql user name
-$details['database'] = "noticeboard"; //your database name
+$details['host'] = getenv('DB_HOST');
+$details['username'] = getenv('DB_USERNAME');
+$details['password'] = getenv('DB_PASS');
+$details['database'] = getenv('DB_NAME');

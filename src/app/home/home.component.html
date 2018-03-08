@@ -1,171 +1,270 @@
-<div class="gallery" id="links">
+<div class="row">
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/nature-1.jpg" title="Nature Image 1" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/nature-1.jpg" alt="Nature Image 1"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Nature image 1</strong>
-      <span>Description</span>
-    </div>
-  </a>
+    <div *ngIf="tempFilterNotices.length > 0" [class]="notesClass">
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/music-1.jpg" title="Music picture 1" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/music-1.jpg" alt="Music picture 1"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Music picture 1</strong>
-      <span>Other description</span>
-    </div>
-  </a>
+        <div class="row" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/girls-1.jpg" title="Girls Image 1" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/girls-1.jpg" alt="Girls Image 1"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Girls image 1</strong>
-      <span>Description</span>
-    </div>
-  </a>
+            <div class="col-md-6 col-sm-6 col-lg-6">
+                <label class="col-md-3">Category</label>
+                <div class="col-md-9">
+                    <select title="stores" (change)="filterItems()" [(ngModel)]="searchFilter" class="form-control pull-left">
+                        <option value="all" selected >All</option>
+                        <option value="educational">Educational</option>
+                        <option value="entertainment" >Entertainment</option>
+                        <option value="politics" >Politics</option>
+                        <option value="sports" >Sports</option>
+                        <option value="informative" >Informative/Others</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-lg-6">
+                <form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
+                    Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search with NOTE TITLE"
+                                   class="form-control pull-right" (keydown)="searchItems()" />
+                </form>
+            </div>
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/nature-2.jpg" title="Nature Image 2" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/nature-2.jpg" alt="Nature Image 2"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Nature image 2</strong>
-      <span>Description</span>
-    </div>
-  </a>
+        </div>
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/space-1.jpg" title="Space picture 1" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/space-1.jpg" alt="Space picture 1"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Space picture 1</strong>
-      <span>Other description</span>
-    </div>
-  </a>
+        <div class="row col-md-12" style="text-align: center; font-size: 18px; font-weight: bolder" *ngIf="notices.length < 1">
+            <em>`NOTICEBOARD` empty box.... </em>
+        </div>
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/music-2.jpg" title="Music picture 2" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/music-2.jpg" alt="Music picture 2"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Music picture 2</strong>
-      <span>Other description</span>
-    </div>
-  </a>
+        <div class="gallery" *ngIf="notices.length > 0">
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/nature-3.jpg" title="Nature Image 3" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/nature-3.jpg" alt="Nature Image 3"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Nature image 3</strong>
-      <span>Description</span>
-    </div>
-  </a>
+            <div style="width: 100%; padding: 5px; text-align: center; font-weight: bolder; text-decoration: underline;">
+                <h4><b>Alerts </b></h4>
+            </div>
+            <a *ngFor="let note of notices" class="gallery-item" title="{{ note.title }}" data-gallery>
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/nature-5.jpg" title="Nature Image 5" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/nature-5.jpg" alt="Nature Image 5"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Nature image 5</strong>
-      <span>Description</span>
-    </div>
-  </a>
+                <div class="palaroid">
+                    <div class="meta">
+                        <strong style="color: #0a001f; font-size: 15px;">Title: {{ note.title }}</strong>
+                        <strong style="color: #33518e">Programme: {{ note.programme_code }}</strong>
+                        <strong style="color: #8e1f1c">Category: {{ note.category }}</strong>
+                        <i>Post Date: {{ note.post_date }}</i>
+                        <h5 class="modal-title" *ngIf="note.level=='urgent'" style="color: red; font-weight: bolder">Level: {{ note.level }}</h5>
+                        <h5 class="modal-title" *ngIf="note.level=='normal'" style="color: dodgerblue; font-weight: bolder">Level: {{ note.level }}</h5>
+                        <!--<i style="font-size: 32px; color: dodgerblue" class="fa fa-map-marker"></i>-->
+                    </div>
+                    <div class="image">
+                        <img src="assets/icons/important-notice.png" height="150" alt="{{ note.title }}"/>
+                        <ul class="gallery-item-controls">
+                            <li style="background: green" data-toggle="modal" [attr.data-target]="'#modal_' + note.id"><span><i class="fa fa-book" style="color: #fff;"></i></span></li>
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/nature-6.jpg" title="Nature Image 6" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/nature-6.jpg" alt="Nature Image 6"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Nature image 6</strong>
-      <span>Description</span>
-    </div>
-  </a>
+                        </ul>
+                    </div>
+                </div>
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/girls-3.jpg" title="Girls Image 3" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/girls-3.jpg" alt="Girls Image 3"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Girls image 3</strong>
-      <span>Description</span>
-    </div>
-  </a>
+                <div id="modal_{{ note.id }}" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title">{{ note.title }}</h3>
+                                <h3 style="color: #8e1f1c" class="modal-title">{{ note.category }}</h3>
+                                <h3 class="modal-title">{{ note.programme_code }}</h3>
+                                <h5 class="modal-title">{{ note.programme_name }}</h5>
+                                <h5 class="modal-title" *ngIf="note.level=='urgent'" style="color: red; font-weight: bolder">Level: {{ note.level }}</h5>
+                                <h5 class="modal-title" *ngIf="note.level=='normal'" style="color: dodgerblue; font-weight: bolder">Level: {{ note.level }}</h5>
+                            </div>
+                            <div class="modal-body">
+                                <img width="100" src="assets/icons/important-notice.png" alt="{{ note.title }}"/>
+                                <p>{{ note.description }}</p>
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/nature-7.jpg" title="Nature Image 7" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/nature-7.jpg" alt="Nature Image 7"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
-    </div>
-    <div class="meta">
-      <strong>Nature image 7</strong>
-      <span>Description</span>
-    </div>
-  </a>
+                                <span><b><h3>Posted By: {{ note.posted_by }}</h3></b></span>
+                                <span>Posted On: {{ note.post_date }}</span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
 
-  <a class="gallery-item" href="assets/lib/theme/images/gallery/music-5.jpg" title="Music picture 5" data-gallery>
-    <div class="image">
-      <img src="assets/lib/theme/images/gallery/music-5.jpg" alt="Music picture 5"/>
-      <ul class="gallery-item-controls">
-        <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
-        <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
-      </ul>
+        </div>
+
     </div>
-    <div class="meta">
-      <strong>Music picture 5</strong>
-      <span>Other description</span>
+
+    <div *ngIf="events.length > 0" [class]="eventsClass">
+
+        <div class="gallery" >
+            <div style="width: 100%; padding: 5px; text-align: center; font-weight: bolder; text-decoration: underline;">
+                <h4><b>New Events </b></h4>
+            </div>
+            <a *ngFor="let event of events" class="gallery-item" title="{{ event.file_name }}" data-gallery>
+
+                <div class="palaroid-1">
+                    <div class="image">
+                        <img *ngIf="event.file !== ''" class="thumbnail img-thumbnail" src="data:image/jpg;base64,{{ event.file }}" alt="{{ event.file_name }}" />
+                        <img *ngIf="event.file === ''" src="assets/icons/events.jpeg" alt="{{ event.file_name }}"/>
+                        <ul class="gallery-item-controls">
+                            <li style="background: green" data-toggle="modal" [attr.data-target]="'#modal_' + event.id"><span><i class="fa fa-book" style="color: #fff;"></i></span></li>
+
+                        </ul>
+                    </div>
+                    <div class="meta">
+                        <strong>Title: {{ event.title }}</strong>
+                        <strong>Subtitle: <i>{{ event.subtitle }}</i></strong>
+                        <b>Post date: {{ event.post_date }}</b>
+                    </div>
+                </div>
+
+                <div id="modal_{{ event.id }}" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3 class="modal-title">{{ event.title }}</h3>
+                                <h5 class="modal-title">{{ event.subtitle }}</h5>
+                            </div>
+                            <div class="modal-body">
+                                <img *ngIf="event.file !== ''" width="300" height="200" src="data:image/jpg;base64,{{ event.file}}" alt="{{ event.file_name }}" >
+                                <img *ngIf="event.file === ''" width="100" height="100" src="assets/icons/events.jpeg" alt="{{ event.file_name }}"/>
+                                <p>{{ event.description }}</p>
+
+                                <span><b><h3>Posted By: {{ event.posted_by }}</h3></b></span>
+                                <span><b><h3>Happening On: {{ event.event_date }}</h3></b></span>
+                                <span>Posted On: {{ event.post_date }}</span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
     </div>
-  </a>
+
+</div>
+
+<hr>
+
+<div class="gallery" *ngIf="events.length===0 && notices.length===0" id="links">
+
+    <a class="gallery-item palaroid" href="assets/images/image14.jpg" title="Nature Image 1" data-gallery>
+        <div class="image">
+            <img src="assets/images/image14.jpg" alt="Nature Image 1"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image1.jpg" title="Music picture 1" data-gallery>
+        <div class="image">
+            <img src="assets/images/image1.jpg" alt="Music picture 1"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image2.jpg" title="Girls Image 1" data-gallery>
+        <div class="image">
+            <img src="assets/images/image2.jpg" alt="Girls Image 1"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image3.jpg" title="Nature Image 2" data-gallery>
+        <div class="image">
+            <img src="assets/images/image3.jpg" alt="Nature Image 2"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image5.jpg" title="Space picture 1" data-gallery>
+        <div class="image">
+            <img src="assets/images/image5.jpg" alt="Space picture 1"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/limages/image6.jpg" title="Music picture 2" data-gallery>
+        <div class="image">
+            <img src="assets/images/image6.jpg" alt="Music picture 2"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image7.jpg" title="Nature Image 3" data-gallery>
+        <div class="image">
+            <img src="assets/images/image7.jpg" alt="Nature Image 3"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image8.jpg" title="Nature Image 5" data-gallery>
+        <div class="image">
+            <img src="assets/images/image8.jpg" alt="Nature Image 5"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image9.jpg" title="Nature Image 6" data-gallery>
+        <div class="image">
+            <img src="assets/images/image9.jpg" alt="Nature Image 6"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image10.jpg" title="Girls Image 3" data-gallery>
+        <div class="image">
+            <img src="assets/images/image10.jpg" alt="Girls Image 3"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image11.jpg" title="Nature Image 7" data-gallery>
+        <div class="image">
+            <img src="assets/images/image11.jpg" alt="Nature Image 7"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
+
+    <a class="gallery-item palaroid" href="assets/images/image12.jpg" title="Music picture 5" data-gallery>
+        <div class="image">
+            <img src="assets/images/image12.jpg" alt="Music picture 5"/>
+            <ul class="gallery-item-controls">
+                <li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
+                <li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
+            </ul>
+        </div>
+    </a>
 
 </div>

@@ -1,6 +1,6 @@
 <div class="row" *ngIf="addTable">
 
-	<div class="col-md-4">
+	<div class="col-md-4 z-depth-3" *ngIf="user!==null && user.is_admin">
 
 		<app-alert></app-alert>
 		<div class="row" *ngIf="loading">
@@ -22,7 +22,7 @@
 							<div class="form-group">
 								<label class="col-md-3 control-label">Programme</label>
 								<div class="col-md-9">
-									<select title="stores" [class.invalid]="!addCourseForm.controls.programme_id.valid" [ngModel]="modalTimetable.programme_id" formControlName="programme_id" class="form-control">
+									<select title="stores" [class.invalid]="!addTableForm.controls.programme_id.valid" [ngModel]="modalTimetable.programme_id" formControlName="programme_id" class="form-control">
 										<option value="0" selected="selected" disabled >---------------------</option>
 										<option *ngFor="let program of programmes" [ngValue]="program.id" >
 											{{ program.name }}
@@ -36,7 +36,7 @@
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
-										<input [ngModel]="modalTimetable.semester" type="text" class="form-control" formControlName="semester" [class.invalid]="!addTableForm.controls.semester.valid"/>
+										<input [ngModel]="modalTimetable.semester" minlength="1" maxlength="2" min="1" max="2" type="number" class="form-control" formControlName="semester" [class.invalid]="!addTableForm.controls.semester.valid"/>
 									</div>
 									<span *ngIf="tableSubmitted && !addTableForm.controls.semester.valid" class="invalid">Semester number is required</span>
 								</div>
@@ -46,19 +46,20 @@
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-calendar-o"></span></span>
-										<input [ngModel]="modalTimetable.year" type="text" class="form-control" formControlName="year" [class.invalid]="!addTableForm.controls.year.valid" />
+										<input [ngModel]="modalTimetable.year" maxlength="4" minlength="4" type="text" class="form-control" formControlName="year" [class.invalid]="!addTableForm.controls.year.valid" />
 									</div>
 									<span *ngIf="tableSubmitted && !addTableForm.controls.year.valid" class="invalid">Field is required</span>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-md-3 control-label">Time Table upload (PDF)</label>
+								<label class="col-md-3 control-label">Time Table upload (PDF) 2MB max</label>
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-file-image-o"></span></span>
 										<input type="file" class="form-control" (change)="onFileChange($event)" accept="application/pdf" />
 									</div>
 								</div>
+								<span *ngIf="tableSubmitted && !addTableForm.controls.pdf_file.valid" class="invalid">please choose a pdf file... and less than 2MB</span>
 							</div>
 						</div>
 						<div class="panel-footer">
@@ -73,108 +74,86 @@
 
 	</div>
 
+	<div class="col-md-4 z-depth-3 visible-lg visible-md" *ngIf="user===null || !user.is_admin">
+		<div style="width: auto; margin: 15px 5px 5px;text-align: center">
+			<h3>External sources</h3>
+		</div>
+		<div class="gallery gallery-small" >
+
+			<a class="gallery-item" href="https://stackoverflow.com" title="stackoverflow.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/stackoverflow.jpeg"/>
+				</div>
+			</a>
+			<a class="gallery-item" href="https://facebook.com" title="facebook.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/fb-logo1.png"/>
+				</div>
+			</a>
+			<a class="gallery-item" href="http://twitter.com" title="twitter.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/twitter-logo1.png" />
+				</div>
+			</a>
+
+			<a class="gallery-item" href="http://bigthink.com" title="bigthink.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/bigthink1.png" />
+				</div>
+			</a>
+			<a class="gallery-item" href="http://coursera.org" title="coursera.org" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/coursera1.jpeg" />
+				</div>
+			</a>
+			<a class="gallery-item" href="http://thefutureschannel.com" title="thefutureschannel.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/tfc.jpeg" />
+				</div>
+			</a>
+
+		</div>
+	</div>
+
 	<div class="col-md-8">
 		<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+			<div style="width: 100%; padding: 5px; text-align: center; font-weight: bolder; text-decoration: underline;"><h4><b>TimeTables</b></h4></div>
 			<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
 				Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search with ACADEMIC YEAR"
 							   class="form-control pull-right" (keydown)="searchItems()" />
 			</form>
 		</div>
+		<div class="row" *ngIf="downloading">
+			<div class="col-md-12">
+				<p style="color: green"><img src="assets/lib/theme/img/loaders/default.gif" /> downloading...
+				</p>
+			</div>
+		</div>
 		<div class="gallery" id="links">
 
-			<a *ngFor="let table of tables" href="uploads/timetables/{{ table.file_name }}" class="gallery-item" title="{{ table.title }}" data-gallery>
+			<a *ngFor="let table of tables" target="_blank" class="gallery-item" title="{{ table.programme_name}}" data-gallery>
 				<div class="image">
+
 					<img src="assets/icons/Acrobat-Professional.png" alt="{{ table.file_name }}"/>
 					<ul class="gallery-item-controls">
-						<li style="background: darkred" (click)="deleteTable(table)"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
+						<li style="background: dodgerblue" (click)="download(table)"><span><i class="fa fa-download" style="color: #fff;"></i></span></li>
+						<li style="background: darkred" *ngIf="user!==null && user.is_admin" (click)="deleteTable(table)"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
 					</ul>
 				</div>
 				<div class="meta">
-					<strong>{{ table.title }}</strong>
-					<b>Academic Year: {{ table.year }}</b>
+					<strong>{{ table.programme_name }}</strong>
+					<b>Academic Year: {{ table.year }}</b><br>
+					<b>Programme: {{ table.programme_code }}</b><br>
+					<b>Post date: {{ table.post_date }}</b><br>
 					<span>Semester: {{ table.semester }}</span>
 				</div>
 			</a>
 
-			<a class="gallery-item" href="assets/icons/Acrobat-Professional.png" title="BSSE 2018" data-gallery>
-				<div class="image">
-					<img src="assets/icons/Acrobat-Professional.png" alt="BSSE 2018"/>
-					<ul class="gallery-item-controls">
-						<li style="background: darkred" (click)="deleteTable(tables[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
-					</ul>
-				</div>
-				<div class="meta">
-					<strong>BSSE</strong>
-					<span>2018 SM-2</span>
-				</div>
-			</a>
-
-			<a class="gallery-item" href="assets/icons/Acrobat-Professional.png" title="BSSE 2018" data-gallery>
-				<div class="image">
-					<img src="assets/icons/Acrobat-Professional.png" alt="BSSE 2018"/>
-					<ul class="gallery-item-controls">
-						<li style="background: darkred" (click)="deleteTable(tables[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
-					</ul>
-				</div>
-				<div class="meta">
-					<strong>BSSE</strong>
-					<span>2018 SM-2</span>
-				</div>
-			</a>
-
-			<a class="gallery-item" href="assets/icons/Acrobat-Professional.png" title="BSSE 2018" data-gallery>
-				<div class="image">
-					<img src="assets/icons/Acrobat-Professional.png" alt="BSSE 2018"/>
-					<ul class="gallery-item-controls">
-						<li style="background: darkred" (click)="deleteTable(tables[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
-					</ul>
-				</div>
-				<div class="meta">
-					<strong>BSSE</strong>
-					<span>2018 SM-2</span>
-				</div>
-			</a>
-
-			<a class="gallery-item" href="assets/icons/Acrobat-Professional.png" title="BSSE 2018" data-gallery>
-				<div class="image">
-					<img src="assets/icons/Acrobat-Professional.png" alt="BSSE 2018"/>
-					<ul class="gallery-item-controls">
-						<li style="background: darkred" (click)="deleteTable(tables[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
-					</ul>
-				</div>
-				<div class="meta">
-					<strong>BSSE</strong>
-					<span>2018 SM-2</span>
-				</div>
-			</a>
-
-			<a class="gallery-item" href="assets/icons/Acrobat-Professional.png" title="BSSE 2018" data-gallery>
-				<div class="image">
-					<img src="assets/icons/Acrobat-Professional.png" alt="BSSE 2018"/>
-					<ul class="gallery-item-controls">
-						<li style="background: darkred" (click)="deleteTable(tables[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
-					</ul>
-				</div>
-				<div class="meta">
-					<strong>BSSE</strong>
-					<span>2018 SM-2</span>
-				</div>
-			</a>
-
-			<a class="gallery-item" href="assets/icons/Acrobat-Professional.png" title="BSSE 2018" data-gallery>
-				<div class="image">
-					<img src="assets/icons/Acrobat-Professional.png" alt="BSSE 2018"/>
-					<ul class="gallery-item-controls">
-						<li style="background: darkred" (click)="deleteTable(tables[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
-					</ul>
-				</div>
-				<div class="meta">
-					<strong>BSSE</strong>
-					<span>2018 SM-2</span>
-				</div>
-			</a>
-
 		</div>
+	</div>
+
+	<div class="col-md-8" style="text-align: center; font-size: 18px; font-weight: bolder" *ngIf="tables.length < 1">
+		<em>`NOTICEBOARD` empty timetables box.... </em>
 	</div>
 
 </div>

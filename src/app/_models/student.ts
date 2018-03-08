@@ -2,6 +2,8 @@ export class Student {
 	id: any;
 	student_no: any;
 	registration_no: any;
-	first_name: any;
-	last_name: any;
+	full_name: any;
+  programme_name: any;
+  programme_code: any;
+  programme_id: any;
 }

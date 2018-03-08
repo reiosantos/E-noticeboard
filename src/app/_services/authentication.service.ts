@@ -7,8 +7,8 @@ import {environment} from '../../environments/environment.prod';
 export class AuthenticationService {
 	constructor(private http: HttpClient) { }
 
-	login(username: string) {
-		return this.http.post<any>(environment.api, { action: 'login', username: username})
+	login(username: string, password: string) {
+		return this.http.post<any>(environment.api, { action: 'login', username: username, password: password})
 			.map(user => {
 				// login successful if there's a jwt token in the response
 				if (user && user.data && user.data.token) {
@@ -21,7 +21,9 @@ export class AuthenticationService {
 
 	logout() {
 		// remove user from local storage to log user out
-		localStorage.removeItem(environment.userStorageKey);
-		// localStorage.clear();
+		if (localStorage.getItem(environment.userStorageKey) !== null) {
+			localStorage.removeItem(environment.userStorageKey);
+			localStorage.clear();
+		}
 	}
 }

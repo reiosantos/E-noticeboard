@@ -1,6 +1,6 @@
 
-<div class="row">
-	<div class="col-md-4">
+<div class="row" *ngIf="user.is_admin">
+	<div class="z-depth-3 col-md-4">
 
 		<app-alert ></app-alert>
 
@@ -21,23 +21,13 @@
 							<h2>Administrators</h2>
 							<p>Add an admin</p>
 							<div class="form-group">
-								<label class="col-md-3 control-label">First Name</label>
+								<label class="col-md-3 control-label">Full Names</label>
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
-										<input [ngModel]="modalAdmin.first_name" type="text" class="form-control" formControlName="first_name" [class.invalid]="!addAdminForm.controls.first_name.valid" />
+										<input [ngModel]="modalAdmin.full_name" type="text" class="form-control" formControlName="full_name" [class.invalid]="!addAdminForm.controls.full_name.valid" />
 									</div>
-									<span *ngIf="adminSubmitted && !addAdminForm.controls.first_name.valid" class="invalid">first name is required</span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-3 control-label">Last Name</label>
-								<div class="col-md-9">
-									<div class="input-group">
-										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
-										<input [ngModel]="modalAdmin.last_name" type="text" class="form-control" formControlName="last_name" [class.invalid]="!addAdminForm.controls.last_name.valid" />
-									</div>
-									<span *ngIf="adminSubmitted && !addAdminForm.controls.last_name.valid" class="invalid">last name is required</span>
+									<span *ngIf="adminSubmitted && !addAdminForm.controls.full_name.valid" class="invalid">Name is required</span>
 								</div>
 							</div>
 							<div class="form-group">
@@ -55,9 +45,9 @@
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-phone"></span></span>
-										<input [ngModel]="modalAdmin.contact" type="text" class="form-control" formControlName="contact" [class.invalid]="!addAdminForm.controls.contact.valid" />
+										<input [ngModel]="modalAdmin.contact" [minlength]="10" [maxlength]="13" type="text" class="form-control" formControlName="contact" [class.invalid]="!addAdminForm.controls.contact.valid" />
 									</div>
-									<span *ngIf="adminSubmitted && !addAdminForm.controls.contact.valid" class="invalid">Field is required</span>
+									<span *ngIf="adminSubmitted && !addAdminForm.controls.contact.valid" class="invalid">A minimum of 10 characters and 13 maximum</span>
 								</div>
 							</div>
 							<div class="form-group">
@@ -65,9 +55,9 @@
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-qrcode"></span></span>
-										<input [ngModel]="modalAdmin.password" type="text" class="form-control" formControlName="password" [class.invalid]="!addAdminForm.controls.password.valid" />
+										<input [ngModel]="modalAdmin.password" type="password" class="form-control" formControlName="password" [class.invalid]="!addAdminForm.controls.password.valid" />
 									</div>
-									<span *ngIf="adminSubmitted && !addAdminForm.controls.password.valid" class="invalid">Field is required</span>
+									<span *ngIf="adminSubmitted && !addAdminForm.controls.password.valid" class="invalid">At least 6 characters minimum (and should not be numeric )</span>
 								</div>
 							</div>
 						</div>
@@ -84,6 +74,7 @@
 
 	<div class="col-md-8">
 		<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+      <div style="width: 100%; padding: 5px; text-align: center; font-weight: bolder; text-decoration: underline;"><h4><b>Administrators</b></h4></div>
 			<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
 				Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search Admin name"
 							   class="form-control pull-right" (keydown)="searchItems()" />
@@ -102,49 +93,12 @@
 			</thead>
 			<tbody>
 			<tr *ngFor="let admin of admins">
-				<td>{{ admin.first_name }} {{ admin.last_name }}</td>
+				<td>{{ admin.full_name }}</td>
 				<td>{{ admin.email }}</td>
 				<td>{{ admin.contact }}</td>
 				<td>
 					<button (click)="editAdmin(admin)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
 					<button (click)="deleteAdmin(admin)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-
-			<tr>
-				<td>Santos Reio</td>
-				<td>12/34/U/344</td>
-				<td>9447928839</td>
-				<td>
-					<button (click)="editAdmin(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteAdmin(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>12/34/U/344</td>
-				<td>9447928839</td>
-				<td>
-					<button (click)="editAdmin(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteAdmin(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>12/34/U/344</td>
-				<td>9447928839</td>
-				<td>
-					<button (click)="editAdmin(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteAdmin(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>12/34/U/344</td>
-				<td>9447928839</td>
-				<td>
-					<button (click)="editAdmin(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteAdmin(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
 				</td>
 			</tr>
 

@@ -1,6 +1,6 @@
 
 <div class="row">
-	<div class="col-md-4">
+	<div *ngIf="user!==null && user.is_admin" class="z-depth-3 col-md-4">
 
 		<app-alert></app-alert>
 
@@ -55,19 +55,33 @@
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-phone"></span></span>
-										<input [ngModel]="modalLecturer.contact" type="text" class="form-control" formControlName="contact" [class.invalid]="!addLecturerForm.controls.contact.valid" />
+										<input [ngModel]="modalLecturer.contact" type="text" maxlength="13" minlength="10" class="form-control" formControlName="contact" [class.invalid]="!addLecturerForm.controls.contact.valid" />
 									</div>
 									<span *ngIf="lecturerSubmitted && !addLecturerForm.controls.contact.valid" class="invalid">Contact number is required</span>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-md-3 control-label">Office Number</label>
+								<label class="col-md-3 control-label">Office /Room No</label>
 								<div class="col-md-9">
-									<div class="input-group">
-										<span class="input-group-addon"><span class="fa fa-qrcode"></span></span>
-										<input [ngModel]="modalLecturer.office_no" type="text" class="form-control" formControlName="office_no" [class.invalid]="!addLecturerForm.controls.office_no.valid" />
-									</div>
-									<span *ngIf="lecturerSubmitted && !addLecturerForm.controls.office_no.valid" class="invalid">This field is required</span>
+									<select title="stores" [class.invalid]="!addLecturerForm.controls.room_id.valid" [(ngModel)]="modalLecturer.room_id" formControlName="room_id" class="form-control">
+										<option value="0" selected="selected" disabled >---------------------</option>
+										<option *ngFor="let room of rooms" [ngValue]="room.id" >
+											{{ room.number }}
+										</option>
+									</select>
+									<span *ngIf="lecturerSubmitted && !addLecturerForm.controls.room_id.valid" class="invalid">This field is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Department</label>
+								<div class="col-md-9">
+									<select title="stores" [class.invalid]="!addLecturerForm.controls.department_id.valid" [(ngModel)]="modalLecturer.department_id" formControlName="department_id" class="form-control">
+										<option value="0" selected="selected" disabled >---------------------</option>
+										<option *ngFor="let department of departments" [ngValue]="department.id" >
+											{{ department.name }}
+										</option>
+									</select>
+									<span *ngIf="lecturerSubmitted && !addLecturerForm.controls.department_id.valid" class="invalid">Select a Department for this lecturer</span>
 								</div>
 							</div>
 						</div>
@@ -82,8 +96,50 @@
 		</div>
 	</div>
 
+	<div class="col-md-4 z-depth-3 visible-lg visible-md" *ngIf="user === null || !user.is_admin">
+		<div style="width: auto; margin: 15px 5px 5px;text-align: center">
+			<h3>External sources</h3>
+		</div>
+		<div class="gallery gallery-small" >
+
+			<a class="gallery-item" href="https://stackoverflow.com" title="stackoverflow.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/stackoverflow.jpeg"/>
+				</div>
+			</a>
+			<a class="gallery-item" href="https://facebook.com" title="facebook.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/fb-logo1.png"/>
+				</div>
+			</a>
+			<a class="gallery-item" href="http://twitter.com" title="twitter.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/twitter-logo1.png" />
+				</div>
+			</a>
+
+			<a class="gallery-item" href="http://bigthink.com" title="bigthink.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/bigthink1.png" />
+				</div>
+			</a>
+			<a class="gallery-item" href="http://coursera.org" title="coursera.org" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/coursera1.jpeg" />
+				</div>
+			</a>
+			<a class="gallery-item" href="http://thefutureschannel.com" title="thefutureschannel.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/tfc.jpeg" />
+				</div>
+			</a>
+
+		</div>
+	</div>
+
 	<div class="col-md-8">
 		<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+			<div style="width: 100%; padding: 5px; text-align: center; font-weight: bolder; text-decoration: underline;"><h4><b>Lecturers</b></h4></div>
 			<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
 				Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search lecturer name"
 							   class="form-control pull-right" (keydown)="searchItems()" />
@@ -98,7 +154,8 @@
 				<th>Email</th>
 				<th>Contact</th>
 				<th>Office No</th>
-				<th>Action</th>
+				<th>Department</th>
+				<th *ngIf="user!==null && user.is_admin">Action</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -106,52 +163,14 @@
 				<td>{{ lecturer.first_name }} {{ lecturer.last_name }}</td>
 				<td>{{ lecturer.email }}</td>
 				<td>{{ lecturer.contact }}</td>
-				<td>{{ lecturer.office_no }}</td>
-				<td>
+				<td>{{ lecturer.room_no }}</td>
+				<td>{{ lecturer.department_name }}</td>
+				<td *ngIf="user!==null && user.is_admin">
 					<button (click)="editLecturer(lecturer)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
 					<button (click)="deleteLecturer(lecturer)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
 				</td>
 			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>ex@site.com</td>
-				<td>9447928839</td>
-				<td>94</td>
-				<td>
-					<button (click)="editLecturer(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteLecturer(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>ex@site.com</td>
-				<td>9447928839</td>
-				<td>94</td>
-				<td>
-					<button (click)="editLecturer(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteLecturer(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>ex@site.com</td>
-				<td>9447928839</td>
-				<td>94</td>
-				<td>
-					<button (click)="editLecturer(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteLecturer(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>ex@site.com</td>
-				<td>9447928839</td>
-				<td>94</td>
-				<td>
-					<button (click)="editLecturer(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteLecturer(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
+
 			</tbody>
 		</table>
 

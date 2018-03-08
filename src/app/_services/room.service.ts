@@ -12,7 +12,7 @@ export class RoomService {
 	}
 
 	createOrUpdate(c: Room) {
-		return this.http.post<any>(environment.api, { action: 'insertOrUpdate', table: 'rooms', course: JSON.stringify(c)});
+		return this.http.post<any>(environment.api, { action: 'insertOrUpdate', table: 'rooms', room: JSON.stringify(c)});
 	}
 
 	delete(id: number) {

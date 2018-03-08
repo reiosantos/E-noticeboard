@@ -1,7 +1,6 @@
 export class Admin {
 	id: number;
-	first_name: string;
-	last_name: string;
+	full_name: string;
 	email: any;
 	contact: any;
 	password: string;

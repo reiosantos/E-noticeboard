@@ -12,7 +12,7 @@ export class ProgrammeService {
 	}
 
 	createOrUpdate(c: Programme) {
-		return this.http.post<any>(environment.api, { action: 'insertOrUpdate', table: 'programmes', course: JSON.stringify(c)});
+		return this.http.post<any>(environment.api, { action: 'insertOrUpdate', table: 'programmes', programme: JSON.stringify(c)});
 	}
 
 	delete(id: number) {

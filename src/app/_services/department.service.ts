@@ -12,7 +12,7 @@ export class DepartmentService {
 	}
 
 	createOrUpdate(c: Department) {
-		return this.http.post<any>(environment.api, { action: 'insertOrUpdate', table: 'departments', course: JSON.stringify(c)});
+		return this.http.post<any>(environment.api, { action: 'insertOrUpdate', table: 'departments', department: JSON.stringify(c)});
 	}
 
 	delete(id: number) {

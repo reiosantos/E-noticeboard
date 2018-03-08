@@ -33,12 +33,14 @@ export class AdminComponent implements OnInit {
 		private fb: FormBuilder
 	) {
 		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		if (this.user === null || !this.user.is_admin) {
+			location.assign('login');
+		}
 		this.addAdminForm = fb.group({
-			first_name: ['', Validators.compose([Validators.required])],
-			last_name: ['', Validators.compose([Validators.required])],
+			full_name: ['', Validators.compose([Validators.required])],
 			email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
 			contact: ['', Validators.compose([Validators.required])],
-			password: ['', Validators.compose([Validators.required])],
+			password: ['', Validators.compose([Validators.required, Validators.pattern(/\D+/)])],
 		});
 		this.searchForm = fb.group({ search: [''] });
 		this.modalAdmin = new Admin();
@@ -57,8 +59,9 @@ export class AdminComponent implements OnInit {
 		const temp: Admin[] = [];
 		for (let i = 0; i < this.tempAdmins.length; i++) {
 			const note = this.tempAdmins[i];
-			if ((note.first_name.toLowerCase()).search(this.searchTerm.toLowerCase()) >= 0 ||
-				(note.last_name.toLowerCase()).search(this.searchTerm.toLowerCase()) >= 0
+			if ((note.full_name.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.contact.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.email.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0
 			) {
 				temp.push(note);
 			}
@@ -68,14 +71,19 @@ export class AdminComponent implements OnInit {
 
 	adminSubmit() {
 		this.adminSubmitted = true;
+		if (this.addAdminForm.controls.password.value.trim() === '12345') {
+			this.addAdminForm.controls.password.setErrors({'incorrect': true});
+		}
 		if (this.addAdminForm.valid) {
 			this.loading = true;
 			const us = new Admin();
-			us.first_name = this.addAdminForm.controls.first_name.value;
-			us.last_name = this.addAdminForm.controls.last_name.value;
+			us.full_name = this.addAdminForm.controls.full_name.value;
 			us.email = this.addAdminForm.controls.email.value;
 			us.contact = this.addAdminForm.controls.contact.value;
 			us.password = this.addAdminForm.controls.password.value;
+			if (us.password.trim() === '12345') {
+
+			}
 			if (this.modalAdmin) {
 				us.id = this.modalAdmin.id;
 			}

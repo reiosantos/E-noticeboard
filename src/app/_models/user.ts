@@ -3,8 +3,9 @@
 	name: string;
 	registration_no: string;
 	student_no: string;
-	student_course_name: string;
-	student_course_code: string;
+	student_programme_name: string;
+	student_programme_code: string;
+	student_programme_id: string;
 	email: any;
 	contact: any;
 	office_no: any;
@@ -12,4 +13,5 @@
 	is_student: boolean;
 	is_lecturer: boolean;
 	is_admin: boolean;
+	token: any;
 }

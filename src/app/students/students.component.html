@@ -1,6 +1,6 @@
 
 <div class="row">
-	<div class="col-md-4">
+	<div *ngIf="user!==null && user.is_admin" class="z-depth-3 col-md-4">
 
 		<app-alert ></app-alert>
 
@@ -21,23 +21,13 @@
 							<h2>Students</h2>
 							<p>Add Student</p>
 							<div class="form-group">
-								<label class="col-md-3 control-label">First Name</label>
+								<label class="col-md-3 control-label">Full Names</label>
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
-										<input [ngModel]="modalStudent.first_name" type="text" class="form-control" formControlName="first_name" [class.invalid]="!addStudentForm.controls.first_name.valid" />
+										<input [ngModel]="modalStudent.full_name" type="text" class="form-control" formControlName="full_name" [class.invalid]="!addStudentForm.controls.full_name.valid" />
 									</div>
-									<span *ngIf="studentSubmitted && !addStudentForm.controls.first_name.valid" class="invalid">first name is required</span>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-3 control-label">Last Name</label>
-								<div class="col-md-9">
-									<div class="input-group">
-										<span class="input-group-addon"><span class="fa fa-edit"></span></span>
-										<input [ngModel]="modalStudent.last_name" type="text" class="form-control" formControlName="last_name" [class.invalid]="!addStudentForm.controls.last_name.valid" />
-									</div>
-									<span *ngIf="studentSubmitted && !addStudentForm.controls.last_name.valid" class="invalid">last name is required</span>
+									<span *ngIf="studentSubmitted && !addStudentForm.controls.full_name.valid" class="invalid">Student name is required ie. (2190222878)</span>
 								</div>
 							</div>
 							<div class="form-group">
@@ -47,7 +37,7 @@
 										<span class="input-group-addon"><span class="fa fa-qrcode"></span></span>
 										<input [ngModel]="modalStudent.registration_no" type="text" class="form-control" formControlName="registration_no" [class.invalid]="!addStudentForm.controls.registration_no.valid" />
 									</div>
-									<span *ngIf="studentSubmitted && !addStudentForm.controls.registration_no.valid" class="invalid">Field is required</span>
+									<span *ngIf="studentSubmitted && !addStudentForm.controls.registration_no.valid" class="invalid">Field is required ie (14/U/1433/PS)</span>
 								</div>
 							</div>
 							<div class="form-group">
@@ -55,9 +45,21 @@
 								<div class="col-md-9">
 									<div class="input-group">
 										<span class="input-group-addon"><span class="fa fa-qrcode"></span></span>
-										<input [ngModel]="modalStudent.student_no" type="text" class="form-control" formControlName="student_no" [class.invalid]="!addStudentForm.controls.student_no.valid" />
+										<input [ngModel]="modalStudent.student_no" type="number" class="form-control" formControlName="student_no" [class.invalid]="!addStudentForm.controls.student_no.valid" />
 									</div>
 									<span *ngIf="studentSubmitted && !addStudentForm.controls.student_no.valid" class="invalid">Field is required</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Programme</label>
+								<div class="col-md-9">
+									<select title="stores" [class.invalid]="!addStudentForm.controls.programme_id.valid" [ngModel]="modalStudent.programme_id" formControlName="programme_id" class="form-control">
+										<option value="0" selected="selected" disabled >---------------------</option>
+										<option *ngFor="let program of programmes" [ngValue]="program.id" >
+											{{ program.name }}
+										</option>
+									</select>
+									<span *ngIf="studentSubmitted && !addStudentForm.controls.programme_id.valid" class="invalid">Select a programme</span>
 								</div>
 							</div>
 						</div>
@@ -72,8 +74,50 @@
 		</div>
 	</div>
 
+	<div class="col-md-4 z-depth-3 visible-md visible-lg" *ngIf="user ===null || !user.is_admin">
+		<div style="width: auto; margin: 15px 5px 5px;text-align: center">
+			<h3>External sources</h3>
+		</div>
+		<div class="gallery gallery-small" >
+
+			<a class="gallery-item" href="https://stackoverflow.com" title="stackoverflow.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/stackoverflow.jpeg"/>
+				</div>
+			</a>
+			<a class="gallery-item" href="https://facebook.com" title="facebook.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/fb-logo1.png"/>
+				</div>
+			</a>
+			<a class="gallery-item" href="http://twitter.com" title="twitter.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/twitter-logo1.png" />
+				</div>
+			</a>
+
+			<a class="gallery-item" href="http://bigthink.com" title="bigthink.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/bigthink1.png" />
+				</div>
+			</a>
+			<a class="gallery-item" href="http://coursera.org" title="coursera.org" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/coursera1.jpeg" />
+				</div>
+			</a>
+			<a class="gallery-item" href="http://thefutureschannel.com" title="thefutureschannel.com" target="_blank" data-gallery>
+				<div class="image">
+					<img src="assets/links/tfc.jpeg" />
+				</div>
+			</a>
+
+		</div>
+	</div>
+
 	<div class="col-md-8">
 		<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+			<div style="width: 100%; padding: 5px; text-align: center; font-weight: bolder; text-decoration: underline;"><h4><b>Students</b></h4></div>
 			<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
 				Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search student name"
 							   class="form-control pull-right" (keydown)="searchItems()" />
@@ -87,53 +131,19 @@
 				<th>Name</th>
 				<th>Registration No.</th>
 				<th>StudentNo.</th>
-				<th>Action</th>
+				<th>Programme.</th>
+				<th *ngIf="user!==null && user.is_admin">Action</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr *ngFor="let student of students">
-				<td>{{ student.first_name }} {{ student.last_name }}</td>
+				<td>{{ student.full_name }}</td>
 				<td>{{ student.registration_no }}</td>
 				<td>{{ student.student_no }}</td>
-				<td>
+				<td>{{ student.programme_code }}</td>
+				<td *ngIf="user!==null && user.is_admin">
 					<button (click)="editStudent(student)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
 					<button (click)="deleteStudent(student)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>12/34/U/344</td>
-				<td>9447928839</td>
-				<td>
-					<button (click)="editStudent(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteStudent(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>12/34/U/344</td>
-				<td>9447928839</td>
-				<td>
-					<button (click)="editStudent(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteStudent(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>12/34/U/344</td>
-				<td>9447928839</td>
-				<td>
-					<button (click)="editStudent(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteStudent(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-				</td>
-			</tr>
-			<tr>
-				<td>Santos Reio</td>
-				<td>12/34/U/344</td>
-				<td>9447928839</td>
-				<td>
-					<button (click)="editStudent(course)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-					<button (click)="deleteStudent(course)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
 				</td>
 			</tr>
 

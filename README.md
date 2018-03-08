@@ -1,5 +1,5 @@
-# kaderi
-sales management system
+# E noticeboard 
+school noticeboard management system
 # Angular4Startup
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.

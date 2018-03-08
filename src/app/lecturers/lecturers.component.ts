@@ -7,6 +7,10 @@ import {LecturerService} from '../_services/lecturer.service';
 import {isBoolean, isNullOrUndefined} from 'util';
 import {EmailValidator} from '../../validators/email';
 import {environment} from '../../environments/environment.prod';
+import {Department} from '../_models/department';
+import {Room} from '../_models/room';
+import {RoomService} from '../_services/room.service';
+import {DepartmentService} from '../_services/department.service';
 
 @Component({
 	selector: 'app-lecturers',
@@ -15,7 +19,7 @@ import {environment} from '../../environments/environment.prod';
 })
 export class LecturersComponent implements OnInit {
 
-	user: User;
+	user: User = null;
 	modalLecturer: Lecturer;
 	addLecturerForm: FormGroup;
 
@@ -24,20 +28,27 @@ export class LecturersComponent implements OnInit {
 	lecturers: any = [];
 
 	tempLecturers: Lecturer[] = [];
+	departments: Department[] = [];
+	rooms: Room[] = [];
 	searchTerm: string;
 	searchForm: FormGroup;
 	constructor(
 		private alertService: AlertService,
 		private lecturerService: LecturerService,
+		private roomService: RoomService,
+		private departmentService: DepartmentService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		if (localStorage.getItem(environment.userStorageKey) !== null) {
+			this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		}
 		this.addLecturerForm = fb.group({
 			first_name: ['', Validators.compose([Validators.required])],
 			last_name: ['', Validators.compose([Validators.required])],
 			email: ['', Validators.compose([Validators.required, EmailValidator.isValid])],
 			contact: ['', Validators.compose([Validators.required])],
-			office_no: ['', Validators.compose([Validators.required])],
+			room_id: ['', Validators.compose([Validators.required])],
+			department_id: ['', Validators.compose([Validators.required])],
 		});
 		this.searchForm = fb.group({ search: [''] });
 		this.modalLecturer = new Lecturer();
@@ -45,6 +56,8 @@ export class LecturersComponent implements OnInit {
 
 	ngOnInit() {
 		this.refreshLecturers();
+		this.refreshDepartments();
+		this.refreshRooms();
 	}
 
 	editLecturer(c: Lecturer) {
@@ -56,8 +69,11 @@ export class LecturersComponent implements OnInit {
 		const temp: Lecturer[] = [];
 		for (let i = 0; i < this.tempLecturers.length; i++) {
 			const note = this.tempLecturers[i];
-			if ((note.first_name.toLowerCase()).search(this.searchTerm.toLowerCase()) >= 0 ||
-				(note.last_name.toLowerCase()).search(this.searchTerm.toLowerCase()) >= 0
+			if ((note.first_name.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.department_name.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.contact.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.email.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.last_name.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0
 			) {
 				temp.push(note);
 			}
@@ -74,7 +90,8 @@ export class LecturersComponent implements OnInit {
 			us.last_name = this.addLecturerForm.controls.last_name.value;
 			us.email = this.addLecturerForm.controls.email.value;
 			us.contact = this.addLecturerForm.controls.contact.value;
-			us.office_no = this.addLecturerForm.controls.office_no.value;
+			us.room_id = this.addLecturerForm.controls.room_id.value;
+			us.department_id = this.addLecturerForm.controls.department_id.value;
 			if (this.modalLecturer) {
 				us.id = this.modalLecturer.id;
 			}
@@ -131,6 +148,28 @@ export class LecturersComponent implements OnInit {
 				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
 					this.lecturers = data.data;
 					this.tempLecturers = data.data;
+				}
+			},
+		);
+	}
+
+	refreshDepartments() {
+		this.departmentService.getAll().subscribe(
+			data => {
+				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
+					this.departments = data.data;
+				}
+			}, error => {
+				console.log(error);
+			}
+		);
+	}
+
+	refreshRooms() {
+		this.roomService.getAll().subscribe(
+			data => {
+				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
+					this.rooms = data.data;
 				}
 			},
 		);

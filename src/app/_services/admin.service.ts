@@ -12,7 +12,7 @@ export class AdminService {
 	}
 
 	createOrUpdate(c: Admin) {
-		return this.http.post<any>(environment.api, { action: 'insertOrUpdate', table: 'admins', course: JSON.stringify(c)});
+		return this.http.post<any>(environment.api, { action: 'insertOrUpdate', table: 'admins', admin: JSON.stringify(c)});
 	}
 
 	delete(id: number) {

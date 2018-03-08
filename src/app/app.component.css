@@ -1,0 +1,10 @@
+.page-content{
+    top: 50px;
+}
+.x-navigation-horizontal{
+    background-color: rgb(35, 167, 76);
+}
+.x-navigation > li.xn-logo > a:first-child{
+    background-color: firebrick;
+}
+/*rgb(35, 167, 76)*/

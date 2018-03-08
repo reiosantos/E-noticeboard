@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import {LoginComponent} from './login/login.component';
 import {AlertService} from './_services/alert.service';
 import {AuthenticationService} from './_services/authentication.service';
-import {UserService} from './_services/user.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {routing} from './app.routing';
@@ -33,6 +32,8 @@ import {RoomService} from './_services/room.service';
 import {AuthGuard} from './_guards/auth.guard';
 import {AdminComponent} from './admins/admin.component';
 import {AdminService} from './_services/admin.service';
+import {MainService} from './_services/main.service';
+import {SharedService} from './_services/shared.service';
 
 
 @NgModule({
@@ -65,7 +66,6 @@ import {AdminService} from './_services/admin.service';
 		AlertService,
 		AuthenticationService,
 		CourseService,
-		UserService,
 		UpshotService,
 		TimetableService,
 		NoticeService,
@@ -74,6 +74,8 @@ import {AdminService} from './_services/admin.service';
 		LecturerService,
 		StudentService,
 		RoomService,
+		MainService,
+		SharedService,
 	],
 	bootstrap: [AppComponent]
 })

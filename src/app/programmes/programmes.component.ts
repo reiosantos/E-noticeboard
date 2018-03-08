@@ -6,6 +6,8 @@ import {AlertService} from '../_services/alert.service';
 import {isBoolean, isNullOrUndefined} from 'util';
 import {ProgrammeService} from '../_services/programme.service';
 import {environment} from '../../environments/environment.prod';
+import {Department} from '../_models/department';
+import {DepartmentService} from '../_services/department.service';
 
 @Component({
 	selector: 'app-programmes',
@@ -14,7 +16,7 @@ import {environment} from '../../environments/environment.prod';
 })
 export class ProgrammesComponent implements OnInit {
 
-	user: User;
+	user: User = null;
 	modalProgamme: Programme;
 	addProgrammeForm: FormGroup;
 
@@ -23,23 +25,29 @@ export class ProgrammesComponent implements OnInit {
 	programmes: any = [];
 
 	tempProgramme: Programme[] = [];
+	departments: Department[] = [];
 	searchTerm: string;
 	searchForm: FormGroup;
 	constructor(
 		private alertService: AlertService,
 		private programmeService: ProgrammeService,
+		private departmentService: DepartmentService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		if (localStorage.getItem(environment.userStorageKey) !== null) {
+			this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		}
 		this.addProgrammeForm = fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			code: ['', Validators.compose([Validators.required])],
+			department_id: ['', Validators.compose([Validators.required])],
 		});
 		this.searchForm = fb.group({ search: [''] });
 		this.modalProgamme = new Programme();
 	}
 
 	ngOnInit() {
+		this.refreshDepartments();
 		this.refreshProgrammes();
 	}
 
@@ -50,6 +58,7 @@ export class ProgrammesComponent implements OnInit {
 			const us = new Programme();
 			us.code = this.addProgrammeForm.controls.code.value;
 			us.name = this.addProgrammeForm.controls.name.value;
+			us.department_id = this.addProgrammeForm.controls.department_id.value;
 			if (this.modalProgamme) {
 				us.id = this.modalProgamme.id;
 			}
@@ -88,7 +97,9 @@ export class ProgrammesComponent implements OnInit {
 		const temp: Programme[] = [];
 		for (let i = 0; i < this.tempProgramme.length; i++) {
 			const note = this.tempProgramme[i];
-			if ((note.name.toLowerCase()).search(this.searchTerm.toLowerCase()) >= 0) {
+			if ((note.name.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.department_name.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.code.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ) {
 				temp.push(note);
 			}
 		}
@@ -122,6 +133,16 @@ export class ProgrammesComponent implements OnInit {
 				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
 					this.programmes = data.data;
 					this.tempProgramme = data.data;
+				}
+			},
+		);
+	}
+
+	refreshDepartments() {
+		this.departmentService.getAll().subscribe(
+			data => {
+				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
+					this.departments = data.data;
 				}
 			},
 		);

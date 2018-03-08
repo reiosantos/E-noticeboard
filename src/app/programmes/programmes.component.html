@@ -1,8 +1,8 @@
 
-<div class="row">
-	<div class="col-sm-6">
+<app-alert></app-alert>
 
-		<app-alert></app-alert>
+<div class="row">
+	<div class="col-sm-7">
 
 		<div class="row">
 			<div class="col-md-12">
@@ -14,7 +14,7 @@
 					</div>
 				</div>
 
-				<div class="row">
+				<div class="z-depth-3 row" *ngIf="user!==null && user.is_admin">
 					<div class="col-md-12">
 						<!-- LOGIN WIDGET -->
 						<form class="form-horizontal" [formGroup]="addProgrammeForm" (submit)="programmeSubmit()" novalidate>
@@ -22,6 +22,19 @@
 								<div class="panel-body">
 									<h2>Programme</h2>
 									<p>Add Programme</p>
+
+									<div class="form-group">
+										<label class="col-md-3 control-label">Department</label>
+										<div class="col-md-9">
+											<select title="stores" [class.invalid]="!addProgrammeForm.controls.department_id.valid" [ngModel]="modalProgamme.department_id" formControlName="department_id" class="form-control">
+												<option value="0" selected="selected" disabled >---------------------</option>
+												<option *ngFor="let department of departments" [ngValue]="department.id" >
+													{{ department.name }}
+												</option>
+											</select>
+											<span *ngIf="programmeSubmitted && !addProgrammeForm.controls.department_id.valid" class="invalid">Select a Department for this programme</span>
+										</div>
+									</div>
 									<div class="form-group">
 										<label class="col-md-3 control-label">Programme Code</label>
 										<div class="col-md-9">
@@ -56,6 +69,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
+							<b>Programmes</b>
 							<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
 								Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search programme name"
 											   class="form-control pull-right" (keydown)="searchItems()" />
@@ -68,54 +82,16 @@
 							<tr>
 								<th>Programme Code</th>
 								<th>Programme Name</th>
-								<th>Action</th>
+								<th>Department</th>
+								<th *ngIf="user!==null && user.is_admin">Action</th>
 							</tr>
 							</thead>
 							<tbody>
 							<tr *ngFor="let program of programmes">
 								<td>{{ program.code }}</td>
 								<td>{{ program.name }}</td>
-								<td>
-									<button (click)="editProgramme(program)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-									<button (click)="deleteProgramme(program)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td>BSE 2301</td>
-								<td>System Architecture</td>
-								<td>
-									<button (click)="editProgramme(program)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-									<button (click)="deleteProgramme(program)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td>BSE 2301</td>
-								<td>System Architecture</td>
-								<td>
-									<button (click)="editProgramme(program)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-									<button (click)="deleteProgramme(program)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td>BSE 2301</td>
-								<td>System Architecture</td>
-								<td>
-									<button (click)="editProgramme(program)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-									<button (click)="deleteProgramme(program)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td>BSE 2301</td>
-								<td>System Architecture</td>
-								<td>
-									<button (click)="editProgramme(program)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-									<button (click)="deleteProgramme(program)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-								</td>
-							</tr>
-							<tr>
-								<td>BSE 2301</td>
-								<td>System Architecture</td>
-								<td>
+								<td>{{ program.department_name }}</td>
+								<td *ngIf="user!==null && user.is_admin">
 									<button (click)="editProgramme(program)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
 									<button (click)="deleteProgramme(program)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
 								</td>
@@ -130,7 +106,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-5">
 
 		<app-departments></app-departments>
 

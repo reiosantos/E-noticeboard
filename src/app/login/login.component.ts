@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	) {
 		this.loginForm = formBuilder.group({
 			email: ['', Validators.compose([Validators.required])],
+			password: [''],
 		});
 	}
 
@@ -45,7 +46,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 			return false;
 		}
 		this.loading = true;
-		this.loginSubscription = this.authService.login(this.model.username).subscribe(
+		if (this.model.password === undefined || this.model.password === null){
+			this.model.password = '';
+		}
+		this.loginSubscription = this.authService.login(this.model.username, this.model.password).subscribe(
 			data => {
 				if (!data) {
 					this.alertService.error('Internal Server Error. Consult the administrator.');

@@ -12,8 +12,8 @@
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-md-12">
+		<div class="z-depth-3 row" *ngIf="user!==null && user.is_admin">
+			<div class="col-md-12" >
 				<!-- LOGIN WIDGET -->
 				<form class="form-horizontal" [formGroup]="addDepartmentForm" (submit)="departmentSubmit()" novalidate>
 					<div class="panel panel-default">
@@ -54,7 +54,8 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="row col-md-12 col-sm-12 col-lg-12" style="border-bottom: 1px solid dodgerblue; margin-bottom: 5px; padding-bottom: 10px">
-					<form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
+          <b>Departments</b>
+          <form class="form-inline" [formGroup]="searchForm" (submit)="searchItems()" role="form" novalidate>
 						Search: <input type="text" name="searchTerm" formControlName="search" placeholder="search department name"
 									   class="form-control pull-right" (keydown)="searchItems()" />
 					</form>
@@ -66,46 +67,14 @@
 					<tr>
 						<th>Department Name</th>
 						<th>Head of department</th>
-						<th>Action</th>
+						<th *ngIf="user!==null && user.is_admin">Action</th>
 					</tr>
 					</thead>
 					<tbody>
 					<tr *ngFor="let department of departments">
 						<td>{{ department.name }}</td>
 						<td>{{ department.head }}</td>
-						<td>
-							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-						</td>
-					</tr>
-					<tr>
-						<td>Networks</td>
-						<td>Santos</td>
-						<td>
-							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-						</td>
-					</tr>
-					<tr>
-						<td>Networks</td>
-						<td>Santos</td>
-						<td>
-							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-						</td>
-					</tr>
-					<tr>
-						<td>Networks</td>
-						<td>Santos</td>
-						<td>
-							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
-							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
-						</td>
-					</tr>
-					<tr>
-						<td>Networks</td>
-						<td>Santos</td>
-						<td>
+						<td *ngIf="user!==null && user.is_admin">
 							<button (click)="editDepartment(department)" class="btn btn-sm btn-rounded btn-success pull-left"><i class="fa fa-edit"></i></button>
 							<button (click)="deleteDepartment(department)" class="btn btn-rounded btn-sm btn-danger center-block"><i class="fa fa-trash-o"></i></button>
 						</td>

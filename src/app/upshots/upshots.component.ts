@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {User} from '../_models/user';
 import {AlertService} from '../_services/alert.service';
@@ -6,6 +6,7 @@ import {UpshotService} from '../_services/upshot.service';
 import {isBoolean, isNullOrUndefined} from 'util';
 import {Upshot} from '../_models/upshot';
 import {environment} from '../../environments/environment.prod';
+import {SharedService} from '../_services/shared.service';
 
 @Component({
 	selector: 'app-upshots',
@@ -13,24 +14,29 @@ import {environment} from '../../environments/environment.prod';
 	styleUrls: ['./upshots.component.css']
 })
 export class UpshotsComponent implements OnInit {
-
-	user: User;
+	user: User = null;
 	addEvent = true;
 	loading = false;
 	addEventForm: FormGroup;
 	modalEvent: Upshot;
 	eventSubmitted = false;
 	events: any = [];
+	ext = 'jpg';
+	image = false;
+
 	constructor(
 		private alertService: AlertService,
 		private eventService: UpshotService,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private _sharedService: SharedService,
 	) {
-		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		if (localStorage.getItem(environment.userStorageKey) !== null) {
+			this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		}
 		this.addEventForm = fb.group({
 			title: ['', Validators.compose([Validators.required])],
 			subtitle: [''],
-			image_file: null,
+			image_file: [''],
 			description: ['', Validators.compose([Validators.required])],
 			event_date: ['', Validators.compose([Validators.required])],
 		});
@@ -41,20 +47,35 @@ export class UpshotsComponent implements OnInit {
 		this.refreshEvents();
 	}
 
+	emitLogin() {
+		this._sharedService.emitChange(true);
+	}
+
 	eventSubmit() {
+		if (this.user === null || this.user.name === null) {
+			alert('You are not logged in.Please login first');
+			return;
+		}
 		this.eventSubmitted = true;
 		if (this.addEventForm.valid) {
 			this.loading = true;
 			const us = new Upshot();
 			us.title = this.addEventForm.controls.title.value;
 			us.subtitle = this.addEventForm.controls.subtitle.value;
-			us.description = this.addEventForm.controls.descriprion.value;
+			us.description = this.addEventForm.controls.description.value;
 			us.event_date = this.addEventForm.controls.event_date.value;
 			us.file = this.addEventForm.controls.image_file.value;
-			us.user_id = this.user.id;
+			us.posted_by = this.user.name;
 			if (this.modalEvent) {
 				us.id = this.modalEvent.id;
 			}
+			us.post_date = environment.generateDate();
+			if (us.file.trim() !== '') {
+				us.file_name = this.generateFileName(us);
+			}else{
+				us.file_name = '';
+			}
+
 			this.eventService.createOrUpdate(us).subscribe(
 				data => {
 					if (!data) {
@@ -83,13 +104,41 @@ export class UpshotsComponent implements OnInit {
 
 	onFileChange(event) {
 		if (event.target.files.length > 0) {
-			const file = event.target.files[0];
-			this.addEventForm.get('image_file').setValue(file);
+			const files = event.target.files;
+			const file = files[0];
+
+			if (files && file) {
+				if (!file.type.match('image.*')) {
+					alert('Not an image file, it won\'t be uploaded');
+					return false;
+				}
+				if (file.size > ( 1024 * 1024 * 5)) { // checking for 2MB maximum
+					alert('File is too large... 5MB maximum');
+					return false;
+				}
+				const reader = new FileReader();
+				reader.onload = () => {
+					const binaryString = reader.result;
+					this.image = true;
+					this.addEventForm.controls['image_file'].setValue(binaryString);
+				};
+				reader.onerror = () => {
+					console.log('there are some problems');
+
+				};
+				reader.readAsDataURL(file);
+			}
 		}
 	}
 
 	editEvent(e: Upshot) {
 		this.modalEvent = e;
+	}
+
+	generateFileName(us: Upshot): string {
+		return (us.title.replace(' ', '_') + '_' +
+			(us.post_date.replace(' ', '_')).replace('-', '_'))
+			.replace(':', '_') + '.' + this.ext;
 	}
 
 	deleteEvent(e: Upshot) {
@@ -114,7 +163,19 @@ export class UpshotsComponent implements OnInit {
 	}
 
 	refreshEvents() {
-		this.eventService.getAll().subscribe(
+		this.eventService.getAll(this.user).subscribe(
+			data => {
+				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
+					this.events = data.data;
+				}else {
+					this.events = [];
+				}
+			},
+		);
+	}
+
+	loadArchives() {
+		this.eventService.getArchives(this.user).subscribe(
 			data => {
 				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
 					this.events = data.data;
@@ -122,4 +183,5 @@ export class UpshotsComponent implements OnInit {
 			},
 		);
 	}
+
 }

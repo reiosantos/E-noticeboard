@@ -19,14 +19,15 @@ import {ProgrammeService} from '../_services/programme.service';
 })
 export class TimetablesComponent implements OnInit, OnDestroy {
 
-	user: User;
+	user: User = null;
 	addTable = true;
 	loading = false;
 	addTableForm: FormGroup;
 	modalTimetable: Timetable;
 	tableSubmitted = false;
-	tables: any = [];
+	tables: Timetable[] = [];
 	programmes: Programme[] = [];
+	downloading = false;
 
 	tableSubscription: any;
 	timerSubscription: any;
@@ -40,12 +41,14 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 		private programmeService: ProgrammeService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		if (localStorage.getItem(environment.userStorageKey) !== null) {
+			this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		}
 		this.addTableForm = fb.group({
 			programme_id: ['', Validators.compose([Validators.required])],
-			pdf_file: null,
-			year: ['', Validators.compose([Validators.required])],
-			semester: ['', Validators.compose([Validators.required])],
+			pdf_file: ['', Validators.compose([Validators.required])],
+			year: ['', Validators.compose([Validators.required, Validators.maxLength(4), Validators.minLength(4)])],
+			semester: ['', Validators.compose([Validators.required, Validators.min(1), Validators.max(2), Validators.maxLength(1)])],
 		});
 		this.searchForm = fb.group({ search: [''] });
 		this.modalTimetable = new Timetable();
@@ -70,7 +73,10 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 		const temp: Timetable[] = [];
 		for (let i = 0; i < this.tempTables.length; i++) {
 			const note = this.tempTables[i];
-			if ((note.year.toLowerCase()).search(this.searchTerm.toLowerCase()) >= 0) {
+			if ((note.year.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.programme_code.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.programme_name.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0
+			) {
 				temp.push(note);
 			}
 		}
@@ -83,13 +89,45 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 
 	onFileChange(event) {
 		if (event.target.files.length > 0) {
-			const file = event.target.files[0];
-			this.addTableForm.get('pdf_file').setValue(file);
+			const files = event.target.files;
+			const file = files[0];
+
+			if (files && file) {
+				if (!file.type.match('application.pdf')) {
+					alert('Not a pdf file');
+					return false;
+				}
+				if (file.size > ( 1024 * 1024 * 2)) { // checking for 2MB maximum
+					alert('File is too large... 2MB maximum');
+					return false;
+				}
+				const reader = new FileReader();
+				reader.onload = () => {
+					const binaryString = reader.result;
+
+					this.addTableForm.controls['pdf_file'].setValue(binaryString);
+				};
+				reader.onerror = () => {
+					console.log('there are some problems');
+
+				};
+				reader.readAsDataURL(file);
+			}
 		}
+	}
+
+	generateFileName(us: Timetable): string {
+		return (us.year + '_' + us.semester + '_' +
+			((us.post_date.replace(' ', '_')).replace('-', '_'))
+				.replace(':', '_')) + '.pdf';
 	}
 
 	tableSubmit() {
 		this.tableSubmitted = true;
+		if (this.addTableForm.controls.pdf_file.value.trim() === '') {
+			alert('please choose a pdf file... and less than 2MB');
+			return false;
+		}
 		if (this.addTableForm.valid) {
 			this.loading = true;
 			const us = new Timetable();
@@ -100,6 +138,9 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 			if (this.modalTimetable) {
 				us.id = this.modalTimetable.id;
 			}
+			us.post_date = environment.generateDate();
+			us.file_name = this.generateFileName(us);
+
 			this.tableService.createOrUpdate(us).subscribe(
 				data => {
 					if (!data) {
@@ -152,9 +193,15 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 	}
 
 	refreshTables() {
-		this.tableService.getAll().subscribe(
+		this.tableService.getAll(this.user).subscribe(
 			data => {
 				if (data && !isNullOrUndefined(data.data) && data.data && !isBoolean(data.data)) {
+					/*let temp: Timetable[] = data.data;
+					for(let i=0;i<temp.length;i++){
+					  let obj: Timetable = temp[i];
+					  this.tables.push(obj);
+					  this.tempTables.push(obj);
+					}*/
 					this.tables = data.data;
 					this.tempTables = data.data;
 				}
@@ -170,6 +217,20 @@ export class TimetablesComponent implements OnInit, OnDestroy {
 					this.programmes = data.data;
 				}
 			},
+		);
+	}
+
+	download(table: Timetable) {
+		this.downloading = true;
+		table.file = 'timetable';
+
+		this.tableService.download(table).subscribe(
+			data => {
+				this.downloading = false;
+			}, error => {
+				this.downloading = false;
+
+			}
 		);
 	}
 }

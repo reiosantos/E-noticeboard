@@ -1,0 +1,144 @@
+.gallery-item > div.image {
+  height: 20em;
+  width: 100%;
+  background: lightgrey;
+  text-align: center;
+  position: relative;
+}
+
+img{
+  vertical-align: middle;
+  width: fit-content;
+  width: -moz-fit-content;
+  height: 100%;
+  margin: auto !important;
+}
+
+.gallery-small img{
+  vertical-align: middle;
+  width: fit-content;
+  width: -moz-fit-content;
+  height: 100%;
+  margin: auto !important;
+}
+.gallery-small .gallery-item{
+  width: 50%;
+}
+
+hr{
+  border: 2px solid green;
+}
+
+.palaroid{
+  -webkit-transform: rotate(-5deg);
+  -moz-transform: rotate(-5deg);
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.palaroid:nth-child(even){
+  -webkit-transform: rotate(10deg);
+  -moz-transform: rotate(10deg);
+}
+
+.palaroid:nth-child(3n){
+  -webkit-transform: none;
+  -moz-transform: none;
+  position: relative;
+  top: -5px;
+}
+
+.palaroid:nth-child(5n){
+  -webkit-transform: rotate(5deg);
+  -moz-transform: rotate(5deg);
+  position: relative;
+  right: 5px;
+}
+
+.palaroid:nth-child(8n){
+  position: relative;
+  right: 5px;
+  top: 8px;
+}
+
+.palaroid:nth-child(11n){
+  position: relative;
+  left: -5px;
+  top: 3px;
+}
+
+.palaroid{
+  background: rgba(128,128,128,0.12);
+  -webkit-transition: -webkit-transform .15s linear;
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+  -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+}
+
+.palaroid:hover {
+  -webkit-transform: scale(1.25);
+  -moz-transform: scale(1.25);
+  position: relative;
+  z-index: 5;
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .7);
+  -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .7);
+}
+
+/**
+For events
+*/
+.palaroid-1{
+    -webkit-transform: rotate(5deg);
+    -moz-transform: rotate(5deg);
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.palaroid-1:nth-child(even){
+    -webkit-transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+}
+
+.palaroid-1:nth-child(3n){
+    -webkit-transform: none;
+    -moz-transform: none;
+    position: relative;
+    top: -5px;
+}
+
+.palaroid-1:nth-child(5n){
+    -webkit-transform: rotate(5deg);
+    -moz-transform: rotate(5deg);
+    position: relative;
+    right: 5px;
+}
+
+.palaroid-1:nth-child(8n){
+    position: relative;
+    right: 5px;
+    top: 8px;
+}
+
+.palaroid-1:nth-child(11n){
+    position: relative;
+    left: -5px;
+    top: 3px;
+}
+
+.palaroid-1{
+    background: rgba(128,128,128,0.12);
+    -webkit-transition: -webkit-transform .15s linear;
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
+}
+
+.palaroid-1:hover {
+    -webkit-transform: scale(1.25);
+    -moz-transform: scale(1.25);
+    position: relative;
+    z-index: 5;
+    -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, .7);
+    -moz-box-shadow: 0 3px 6px rgba(0, 0, 0, .7);
+}
+.gallery .gallery-item {
+    width: 15%;
+}

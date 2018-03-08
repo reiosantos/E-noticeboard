@@ -14,7 +14,7 @@ import {environment} from '../../environments/environment.prod';
 })
 export class RoomsOfficesComponent implements OnInit {
 
-	user: User;
+	user: User = null;
 	modalRoom: Room;
 	addRoomForm: FormGroup;
 
@@ -30,7 +30,9 @@ export class RoomsOfficesComponent implements OnInit {
 		private roomService: RoomService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		if (localStorage.getItem(environment.userStorageKey) !== null) {
+			this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		}
 		this.addRoomForm = fb.group({
 			block: ['', Validators.compose([Validators.required])],
 			level: ['', Validators.compose([Validators.required])],
@@ -53,7 +55,10 @@ export class RoomsOfficesComponent implements OnInit {
 		const temp: Room[] = [];
 		for (let i = 0; i < this.tempRooms.length; i++) {
 			const note = this.tempRooms[i];
-			if ((note.number.toLowerCase()).search(this.searchTerm.toLowerCase()) >= 0) {
+			if ((note.number.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.level.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0 ||
+				(note.block.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0
+			) {
 				temp.push(note);
 			}
 		}

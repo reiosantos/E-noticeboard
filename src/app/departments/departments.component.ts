@@ -13,7 +13,7 @@ import {environment} from '../../environments/environment.prod';
 	styleUrls: ['./departments.component.css']
 })
 export class DepartmentsComponent implements OnInit {
-	user: User;
+	user: User = null;
 	modalDepartment: Department;
 	addDepartmentForm: FormGroup;
 
@@ -29,7 +29,9 @@ export class DepartmentsComponent implements OnInit {
 		private departmentService: DepartmentService,
 		private fb: FormBuilder
 	) {
-		this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		if (localStorage.getItem(environment.userStorageKey) !== null) {
+			this.user = JSON.parse(localStorage.getItem(environment.userStorageKey));
+		}
 		this.addDepartmentForm = fb.group({
 			name: ['', Validators.compose([Validators.required])],
 			head: ['', Validators.compose([Validators.required])],
@@ -87,7 +89,7 @@ export class DepartmentsComponent implements OnInit {
 		const temp: Department[] = [];
 		for (let i = 0; i < this.tempDepartment.length; i++) {
 			const note = this.tempDepartment[i];
-			if ((note.name.toLowerCase()).search(this.searchTerm.toLowerCase()) >= 0) {
+			if ((note.name.toLowerCase()).search(this.searchTerm.trim().toLowerCase()) >= 0) {
 				temp.push(note);
 			}
 		}

@@ -1,0 +1,22 @@
+.z-depth-3 {
+  -webkit-box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.3);
+}
+.gallery-small .gallery-item > div.image {
+  height: 15em;
+  width: 100%;
+  background: #FFFFFF; /* lightgrey;*/
+  text-align: center;
+  position: relative;
+}
+
+.gallery-small img{
+  vertical-align: middle;
+  width: fit-content;
+  width: -moz-fit-content;
+  height: 100%;
+  margin: auto !important;
+}
+.gallery-small .gallery-item{
+  width: 50%;
+}
