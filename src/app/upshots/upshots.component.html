@@ -84,34 +84,81 @@
 
 			<a *ngFor="let event of events" class="gallery-item" title="{{ event.file_name }}" data-gallery>
 				<div class="image">
-					<img src="uploads/events/{{ event.file_name }}" alt="{{ event.file_name }}"/>
+					<img *ngIf="event.file_name !== ''" src="uploads/events/{{ event.file_name }}" alt="{{ event.file_name }}" >
+					<img *ngIf="event.file_name === ''" src="assets/icons/events.jpeg" alt="{{ event.file_name }}"/>
 					<ul class="gallery-item-controls">
+						<li style="background: green" data-toggle="modal" [attr.data-target]="'#modal_' + event.id"><span><i class="fa fa-book" style="color: #fff;"></i></span></li>
 						<li style="background: darkred" (click)="deleteEvent(event)"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
 					</ul>
 				</div>
 				<div class="meta">
 					<strong>{{ event.title }}</strong>
 					<b>{{ event.subtitle }}</b>
-					<span>{{ event.description }}</span>
+				</div>
+				<div id="modal_{{ event.id }}" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h3 class="modal-title">{{ event.title }}</h3>
+								<h5 class="modal-title">{{ event.subtitle }}</h5>
+							</div>
+							<div class="modal-body">
+								<img *ngIf="event.file_name !== ''" width="100" height="100" src="uploads/events/{{ event.file_name }}" alt="{{ event.file_name }}" >
+								<img *ngIf="event.file_name === ''" width="100" height="100" src="assets/icons/events.jpeg" alt="{{ event.file_name }}"/>
+								<p>{{ event.description }}</p>
+
+								<span><b><h3>Happening On: {{ event.event_date }}</h3></b></span>
+								<span>Posted On: {{ event.post_date }}</span>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</a>
 
 			<a class="gallery-item" title="Nature Image 1" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/nature-1.jpg" alt="Nature Image 1"/>
+					<img src="assets/icons/events.jpeg" alt="Nature Image 1"/>
 					<ul class="gallery-item-controls">
+						<li style="background: green" data-toggle="modal" data-target="#modal_0"><span><i class="fa fa-book" style="color: #fff;"></i></span></li>
 						<li style="background: darkred" (click)="deleteEvent(events[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
 					</ul>
 				</div>
 				<div class="meta">
-					<strong>Nature image 1</strong>
-					<span>Description</span>
+					<strong>Title</strong>
+					<span>Subtitle</span>
+				</div>
+				<div id="modal_0" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h3 class="modal-title">Event title</h3>
+								<h5 class="modal-title">Event title</h5>
+							</div>
+							<div class="modal-body">
+								<img src="assets/icons/events.jpeg" width="100" height="100" alt="Nature Image 1"/>
+								<p>Am describing this event in detail </p>
+
+								<span><b><h3>Happening On: 2018-04-05</h3></b></span>
+								<span>Posted On: 2018-03-09</span>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</a>
 
 			<a class="gallery-item" title="Music picture 1" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/music-1.jpg" alt="Music picture 1"/>
+					<img src="assets/icons/events.jpeg" alt="Music picture 1"/>
 					<ul class="gallery-item-controls">
 						<li style="background: darkred" (click)="deleteEvent(events[0])"><span><i class="fa fa-trash-o" style="color: #fff;"></i></span></li>
 					</ul>
@@ -124,7 +171,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/girls-1.jpg" title="Girls Image 1" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/girls-1.jpg" alt="Girls Image 1"/>
+					<img src="assets/icons/events.jpeg" alt="Girls Image 1"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -138,7 +185,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-2.jpg" title="Nature Image 2" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/nature-2.jpg" alt="Nature Image 2"/>
+					<img src="assets/icons/events.jpeg" alt="Nature Image 2"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -152,7 +199,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/space-1.jpg" title="Space picture 1" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/space-1.jpg" alt="Space picture 1"/>
+					<img src="assets/icons/events.jpeg" alt="Space picture 1"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -166,7 +213,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/music-2.jpg" title="Music picture 2" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/music-2.jpg" alt="Music picture 2"/>
+					<img src="assets/icons/events.jpeg" alt="Music picture 2"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -180,7 +227,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-3.jpg" title="Nature Image 3" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/nature-3.jpg" alt="Nature Image 3"/>
+					<img src="assets/icons/events.jpeg" alt="Nature Image 3"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -194,7 +241,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-5.jpg" title="Nature Image 5" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/nature-5.jpg" alt="Nature Image 5"/>
+					<img src="assets/icons/events.jpeg" alt="Nature Image 5"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -208,7 +255,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-6.jpg" title="Nature Image 6" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/nature-6.jpg" alt="Nature Image 6"/>
+					<img src="assets/icons/events.jpeg" alt="Nature Image 6"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -222,7 +269,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/girls-3.jpg" title="Girls Image 3" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/girls-3.jpg" alt="Girls Image 3"/>
+					<img src="assets/icons/events.jpeg" alt="Girls Image 3"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -236,7 +283,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/nature-7.jpg" title="Nature Image 7" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/nature-7.jpg" alt="Nature Image 7"/>
+					<img src="assets/icons/events.jpeg" alt="Nature Image 7"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>
@@ -250,7 +297,7 @@
 
 			<a class="gallery-item" href="assets/lib/theme/images/gallery/music-5.jpg" title="Music picture 5" data-gallery>
 				<div class="image">
-					<img src="assets/lib/theme/images/gallery/music-5.jpg" alt="Music picture 5"/>
+					<img src="assets/icons/events.jpeg" alt="Music picture 5"/>
 					<ul class="gallery-item-controls">
 						<li><label class="check"><input type="checkbox" class="icheckbox"/></label></li>
 						<li><span class="gallery-item-remove"><i class="fa fa-times"></i></span></li>

@@ -175,8 +175,8 @@ class Users
 			$this->handle->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$this->handle->beginTransaction();
 
-			$users = $this->handle->prepare("SELECT a.*, b.course_code, b.course_name FROM students a LEFT OUTER JOIN 
-courses b ON a.student_course=b.id WHERE (registration_no=:username OR student_no=:username)");
+			$users = $this->handle->prepare("SELECT a.*, b.course_code, b.course_name FROM users a LEFT OUTER JOIN 
+courses b ON a.course_id_fk=b.course_id WHERE (registration_no=:username OR student_no=:username)");
 			if($users->execute([
 				':username'=>$username,
 			])){
@@ -186,8 +186,8 @@ courses b ON a.student_course=b.id WHERE (registration_no=:username OR student_n
 				$row = $users->fetch(PDO::FETCH_ASSOC);
 
 				$ret = [
-					'id' => $row['id'],
-					'name' => $row['student_name'],
+					'id' => $row['user_id'],
+					'name' => $row['first_name'] . $row['last_name'],
 					'registration_no' => $row['registration_no'],
 					'student_no' => $row['student_no'],
 					'student_course_name' => boolval($row['course_name']),
@@ -219,6 +219,16 @@ courses b ON a.student_course=b.id WHERE (registration_no=:username OR student_n
 	 * @return int|string
 	 */
 	private function generateToken() {
-		return mb_convert_encoding(rand(100000, 900000),'UTF-8', 'UTF-8');
+        try {
+            return bin2hex(random_bytes(32)); //for php 7+
+        } catch (Exception $e) {
+            // for php 5.3+
+            if (function_exists('mcrypt_create_iv')){
+                return bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
+            }else{
+                return bin2hex(openssl_random_pseudo_bytes(32));
+            }
+        }
+		// return mb_convert_encoding(rand(100000, 900000),'UTF-8', 'UTF-8');
 	}
 }
